@@ -12,6 +12,9 @@ All games share one card library (words, phrasal verbs, idioms, situations, slan
 
 Scores, settings, saved wheels and cards you add are kept in your own browser.
 
+## Install as an app
+Crockick is a PWA: on Android press **Install app** (or the browser's *Install* option); on iPhone tap **Share → Add to Home Screen**. It then opens full screen and works offline after the first visit.
+
 ## Updating
 The whole platform is one file: `index.html`. To update it, upload the new `index.html` and commit.
 

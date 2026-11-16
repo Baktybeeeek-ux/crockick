@@ -1,0 +1,25 @@
+{
+  "name": "Crockick: party games for English classes",
+  "short_name": "Crockick",
+  "description": "Charades, Spy and Wheel of Fortune for English classes.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#174C3C",
+  "theme_color": "#174C3C",
+  "lang": "en",
+  "categories": ["education", "games"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Crockick", "url": "./#crockick", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Spy", "url": "./#spy", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Wheel of Fortune", "url": "./#wheel", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
+}
