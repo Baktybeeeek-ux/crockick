@@ -15,7 +15,7 @@
 <style>[hidden]{display:none!important}</style>
 <title>Crockick</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Lilita+One&family=Luckiest+Guy&family=Mali:wght@500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;600&family=Lilita+One&family=Luckiest+Guy&family=Mali:wght@500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
 <style>
 /* Layout: green arcade band (logo + scoreboard) over an ivory play field; card is the hero, timer HUD beside it on desktop and above it on mobile, controls stick to the thumb zone on phones */
 :root{
@@ -929,6 +929,150 @@ a.ticket:hover .tplay{filter:brightness(1.06)}
   .tmeta span+span{margin-left:8px;padding-left:8px}
 }
 @media (prefers-reduced-motion:reduce){.wpopcard,.wpointer.tick{animation:none}}
+/* ---------- Crockick phone version ---------- */
+.v-mcroc{display:none}
+body.mob[data-view="crockick"] .v-croc{display:none!important}
+body.mob[data-view="crockick"] .v-mcroc{display:block}
+body.mob[data-view="crockick"] .foot{display:none}
+body.mob[data-view="crockick"]{background:var(--bg)}
+.v-mcroc{--mf:#274B3D;--mf2:#315346;--my:#F8D377;--my2:#DEB659;--mg:#3E7D52;--mink:var(--text);--mmut:var(--muted-strong)}
+.mscr{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;font-family:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;color:var(--text)}
+.mscr[hidden]{display:none!important}
+.mband{background:var(--mf);color:#F7F7F0;padding:calc(env(safe-area-inset-top,0px) + 18px) 20px 14px}
+.mband-lg{padding-top:calc(env(safe-area-inset-top,0px) + 30px);padding-bottom:18px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.mband-row{display:flex;align-items:center;justify-content:space-between}
+.mscallop{height:12px;background:radial-gradient(circle at 12px 12px,var(--bg) 12px,transparent 12.5px) center top/24px 24px repeat-x,var(--mf);background-position:center 0}
+.mword{margin:0;font-family:"Lilita One","Fredoka",system-ui,sans-serif;font-weight:400;font-size:48px;line-height:1;letter-spacing:.01em;color:#F7F7F0}
+.mword span{color:var(--my)}
+.mword-sm{font-size:30px;background:none;border:0;padding:0;cursor:pointer}
+.mslogan{margin:4px 0 0;font-family:"Caveat","Mali",cursive;font-size:24px;line-height:28px;font-weight:600}
+.mcredit{margin:0;font-family:"Caveat","Mali",cursive;font-size:18px;line-height:22px;font-weight:500;color:#D9C27A}
+.mkicker{font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;color:#B8C4BB;text-transform:uppercase}
+.mbody{flex:1;display:flex;flex-direction:column;gap:22px;padding:22px 20px 24px}
+.mgrow{flex:1}
+.msec{display:flex;flex-direction:column;gap:10px}
+.mh{margin:0;font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mmut)}
+.mh2{margin:0;font-size:19px;line-height:26px;font-weight:700}
+.mhrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.mhrow small{font-size:14px;color:var(--mmut);font-weight:600}
+.mteams{display:flex;flex-direction:column;gap:10px}
+.mteam{display:flex;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:10px 10px 10px 16px}
+.mteam:focus-within{border-color:var(--mg)}
+.mteam .num{flex:none;width:32px;height:32px;border-radius:6px;background:var(--mf);color:#F7F7F0;display:grid;place-items:center;font-weight:800;font-size:15px}
+.mteam .tf{flex:1;min-width:0;display:flex;flex-direction:column}
+.mteam label{font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;color:var(--mmut)}
+.mteam input{border:0;padding:0;margin:0;background:transparent;color:var(--text);font:inherit;font-size:22px;line-height:30px;font-weight:700;width:100%;min-width:0}
+.mteam input:focus{outline:none}
+.mteam .rm{flex:none;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:22px;font-weight:700}
+.mteam .rm:disabled{opacity:.3}
+.mlink{align-self:center;min-height:44px;padding:0 14px;border:0;background:transparent;color:var(--text);font:inherit;font-size:16px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.mlink:disabled{opacity:.4}
+.mlevels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mlevels button{height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 16px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:16px;line-height:20px;font-weight:700;cursor:pointer}
+.mlevels button[aria-pressed="true"]{background:#EDC643;border-color:#EDC643;color:#222924}
+.mdots{display:flex;gap:3px}
+.mdots i{width:6px;height:6px;border-radius:50%;box-shadow:inset 0 0 0 1.5px currentColor}
+.mdots i.on{background:currentColor}
+.mtimes{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:6px;padding:4px;background:var(--surface-2);border-radius:14px}
+.mtimes button{height:44px;border:0;border-radius:10px;background:transparent;color:var(--text);font:inherit;font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer}
+.mtimes button[aria-pressed="true"]{background:var(--mf);color:#F7F7F0}
+.mcta{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.mbig{height:60px;display:flex;align-items:center;justify-content:center;border:0;border-radius:12px;background:var(--my);color:#222924;box-shadow:0 6px 0 var(--my2);font:inherit;font-size:22px;line-height:28px;font-weight:800;cursor:pointer;width:100%}
+.mbig:disabled{opacity:.5}
+.ck-press{transition:transform 80ms,box-shadow 80ms}
+.ck-press:active{transform:translateY(6px);box-shadow:none!important}
+.msum{margin:6px 0 0;text-align:center;font-size:15px;line-height:22px;color:var(--mmut)}
+.mnew{font-size:14px;color:var(--mmut)}
+.mnav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px 10px calc(env(safe-area-inset-bottom,0px) + 8px);background:var(--surface);border-top:1px solid var(--line);z-index:5}
+.mnavb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border:0;border-radius:12px;background:transparent;color:var(--mmut);font:inherit;font-size:12px;font-weight:700;text-decoration:none;cursor:pointer}
+.mnavb:active{background:var(--surface-2)}
+.mnavb svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mnavb.themebtn .sun{display:none}.mnavb.themebtn[aria-pressed="true"] .sun{display:block}.mnavb.themebtn[aria-pressed="true"] .moon{display:none}
+/* turn */
+.mturnhead{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding-top:10px}
+.mpill{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--my);color:#222924;font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.mpill.grey{background:var(--surface-2);color:var(--text)}
+.mteamname{margin:0;font-size:44px;line-height:48px;font-weight:800;letter-spacing:-.03em;overflow-wrap:anywhere}
+.mlead{margin:0;max-width:300px;font-size:18px;line-height:28px;color:var(--mmut)}
+.mlegend{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:4px 20px}
+.mlegrow{display:flex;align-items:center;gap:16px;padding:14px 0}
+.mlegrow+.mlegrow{border-top:2px dotted var(--line)}
+.mlegrow div{display:flex;flex-direction:column}
+.mlegrow b{font-size:19px;line-height:26px}
+.mlegrow div span{font-size:15px;line-height:22px;color:var(--mmut)}
+.mlegic{flex:none;width:48px;height:48px;border-radius:999px;background:var(--surface-2);color:var(--text);display:grid;place-items:center}
+.mlegic.up{background:var(--mg);color:#fff}
+.mlegic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mscores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mscore{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.mscore.now{border-color:transparent;box-shadow:0 0 0 4px var(--my2)}
+.mscore span{font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;color:var(--mmut);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mscore b{font-size:36px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+/* play */
+.mplay{height:100vh;height:100dvh;overflow:hidden}
+.mplay .mband,.mplay .mscallop{position:relative;z-index:3}
+body.mob[data-view="crockick"] .toasts{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
+.mplayhead{display:flex;flex-direction:column;gap:14px;padding-bottom:16px}
+.mplaytop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mpause{flex:none;width:48px;height:48px;border:0;border-radius:12px;background:var(--mf2);color:#F7F7F0;display:grid;place-items:center;cursor:pointer}
+.mpause svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mpause .ic-play{display:none}.mpause.is-paused .ic-play{display:block}.mpause.is-paused .ic-pause{display:none}
+.mpause:disabled{opacity:.4}
+.mclockbox{display:flex;flex-direction:column;align-items:center;gap:2px}
+.mclock{font-size:40px;line-height:1;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.mclock.low{color:#F08A5D}
+.mptsbox{flex:none;width:48px;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.mpts{font-size:28px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;color:var(--my)}
+.mbar{height:6px;border-radius:999px;background:var(--mf2);overflow:hidden}
+.mbar i{display:block;height:100%;width:100%;border-radius:999px;background:#6DBB86;transition:width 1s linear}
+.mbar i.low{background:#F08A5D}
+.mplaybody{min-height:0;gap:14px;padding-top:16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px)}
+.mswbtn{flex:none;height:56px;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--mg);box-shadow:0 4px 0 var(--line);font:inherit;font-size:19px;font-weight:800;cursor:pointer;transition:background .12s,color .12s,border-color .12s}
+.mswbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.mswbtn.dn{color:var(--mmut)}
+.mswbtn.up.hot{background:var(--mg);border-color:var(--mg);color:#fff;box-shadow:0 4px 0 #2F6140}
+.mswbtn.dn.hot{background:#5F6B62;border-color:#5F6B62;color:#fff;box-shadow:0 4px 0 #454F48}
+.mswbtn:disabled{opacity:.45}
+.mcardzone{flex:1;min-height:0;position:relative;margin-bottom:8px}
+.mcard{--cc:#58996C;position:absolute;inset:0;box-sizing:border-box;background:var(--surface);border:2px solid var(--line);border-top:8px solid var(--cc);border-radius:20px;box-shadow:0 8px 0 color-mix(in srgb,var(--cc) 80%,#000);touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overflow:hidden;will-change:transform}
+.mcard.fly{transition:transform .22s ease-in,opacity .22s ease-in;opacity:0}
+.mcard.back{transition:transform .2s ease-out}
+.mcard.enter{animation:menter .2s ease-out}
+@keyframes menter{from{transform:scale(.94);opacity:0}}
+.mcardin{height:100%;box-sizing:border-box;padding:22px 22px 20px;display:flex;flex-direction:column;align-items:center}
+.mcard.paused .mcardin{filter:blur(14px)}
+.mcat{display:flex;align-items:center;gap:8px}
+.mcatic{width:28px;height:28px;border-radius:999px;background:var(--cc);display:grid;place-items:center}
+.mcatic svg{width:16px;height:16px}
+.mcatic .aa{font-size:11px;font-weight:800;color:#fff}
+.mcatname{font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--cc)}
+.mcatpts{margin-left:4px;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--cc) 15%,transparent);color:var(--cc);font-size:12px;font-weight:800}
+.mcardtext{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;min-height:0}
+.mterm{font-size:clamp(34px,11vw,56px);line-height:1.08;font-weight:800;letter-spacing:-.03em;overflow-wrap:anywhere}
+.mmean{font-size:20px;line-height:28px;font-weight:500;color:var(--mmut);max-width:290px}
+.mlast{margin:0;padding:6px 12px;border-radius:999px;background:#B8441D;color:#fff;font-size:13px;font-weight:800}
+.mstamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-6deg);padding:10px 20px;border-radius:12px;border:3px solid currentColor;background:var(--surface);font-size:28px;line-height:32px;font-weight:800;letter-spacing:.06em;opacity:0;pointer-events:none}
+.mpaused{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:color-mix(in srgb,var(--surface) 55%,transparent);padding:0 40px}
+.mpaused[hidden]{display:none}
+.mpaused .mbig{width:auto;padding:0 28px;height:52px;font-size:19px}
+.mtally{margin:0;text-align:center;font-size:15px;line-height:22px;color:var(--mmut);font-variant-numeric:tabular-nums}
+.mend{margin-top:-8px;font-size:14px;color:var(--mmut);min-height:36px}
+/* results */
+.mresband{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:18px}
+.mresband>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.mresband .mkicker{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mresbig{font-size:36px;line-height:1;font-weight:800;letter-spacing:-.02em}
+.mreslist{list-style:none;margin:0;padding:4px 16px;background:var(--surface);border:2px solid var(--line);border-radius:20px;display:flex;flex-direction:column;max-height:46vh;overflow:auto}
+.mreslist li+li{border-top:2px dotted var(--line)}
+.mreslist button{width:100%;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border:0;background:transparent;color:var(--text);text-align:left;font:inherit;cursor:pointer}
+.mreslist .w{display:flex;flex-direction:column;min-width:0}
+.mreslist .w b{font-size:18px;line-height:24px;font-weight:700;overflow-wrap:anywhere}
+.mreslist .w small{font-size:12px;line-height:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.mreslist .chip{flex:none;display:flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;background:var(--surface-2);color:var(--mmut);font-size:14px;font-weight:800;white-space:nowrap}
+.mreslist button[aria-pressed="true"] .chip{background:var(--mg);color:#fff}
+.mreslist button[aria-pressed="false"] .w b{color:var(--mmut)}
+.mreslist .empty{padding:16px 0;color:var(--mmut);font-weight:600;text-align:center}
+@media (prefers-reduced-motion:reduce){.ck-press,.mcard.fly,.mcard.back{transition:none}.mcard.enter{animation:none}}
 </style>
 </head>
 <body>
@@ -1265,6 +1409,118 @@ a.ticket:hover .tplay{filter:brightness(1.06)}
     </section>
   </div>
 </main>
+</div>
+
+<!-- ================= CROCKICK: phone version (swipe up = guessed, swipe down = skip) ================= -->
+<div class="v-mcroc" id="mCroc">
+
+  <!-- 1 · setup -->
+  <section class="mscr" id="mSetup">
+    <header class="mband mband-lg">
+      <p class="mword">Crockic<span>k</span></p>
+      <p class="mslogan">Act it, say it, make a sound. Just get them to guess!</p>
+      <p class="mcredit">Developed by Baky</p>
+    </header>
+    <div class="mscallop" aria-hidden="true"></div>
+    <main class="mbody">
+      <section class="msec">
+        <div class="mhrow"><h2 class="mh">Teams</h2><small id="mTeamCount"></small></div>
+        <div class="mteams" id="mTeams"></div>
+        <button class="mlink" type="button" id="mAddTeam">+ Add team</button>
+      </section>
+      <section class="msec">
+        <h2 class="mh">Level</h2>
+        <div class="mlevels" id="mLevels"></div>
+      </section>
+      <section class="msec">
+        <h2 class="mh" id="mTimeL">Round time</h2>
+        <div class="mtimes" id="mTimes" role="group" aria-labelledby="mTimeL"></div>
+      </section>
+      <div class="mgrow"></div>
+      <div class="mcta">
+        <button class="mbig ck-press" type="button" id="mStartGame">Start game</button>
+        <p class="msum" id="mSummary"></p>
+        <button class="mlink mnew" type="button" id="mNewGame" hidden>New game (reset scores)</button>
+      </div>
+    </main>
+    <nav class="mnav" aria-label="Menu">
+      <a class="mnavb" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Games</span></a>
+      <button class="mnavb" type="button" id="mCardsBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="3"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg><span>Cards</span></button>
+      <button class="mnavb" type="button" id="mSetBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg><span>Settings</span></button>
+      <button class="mnavb themebtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="themelbl">Dark mode</span></button>
+    </nav>
+  </section>
+
+  <!-- 2 · your turn -->
+  <section class="mscr" id="mTurn" hidden>
+    <header class="mband mband-row">
+      <button class="mword mword-sm" type="button" id="mHome" aria-label="Back to setup">Crockic<span>k</span></button>
+      <span class="mkicker" id="mTurnRound">ROUND 1</span>
+    </header>
+    <div class="mscallop" aria-hidden="true"></div>
+    <main class="mbody">
+      <div class="mturnhead">
+        <span class="mpill">YOUR TURN</span>
+        <h1 class="mteamname" id="mTurnTeam">Team</h1>
+        <p class="mlead">Give the phone to one player. Only they look at the card. The team guesses.</p>
+      </div>
+      <div class="mlegend">
+        <div class="mlegrow"><span class="mlegic up" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span><div><b>Swipe up</b><span id="mUpTxt">They guessed it · card points</span></div></div>
+        <div class="mlegrow"><span class="mlegic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg></span><div><b>Swipe down</b><span id="mDnTxt">Skip the card · no penalty</span></div></div>
+      </div>
+      <div class="mscores" id="mScores"></div>
+      <div class="mgrow"></div>
+      <button class="mbig ck-press" type="button" id="mStartRound">Start round</button>
+      <button class="mlink" type="button" id="mFixScores">Change scores</button>
+    </main>
+  </section>
+
+  <!-- 3 · the round -->
+  <section class="mscr mplay" id="mPlay" hidden>
+    <header class="mband mplayhead">
+      <div class="mplaytop">
+        <button class="mpause" type="button" id="mPause" aria-label="Pause"><svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14"/><path d="M15 5v14"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button>
+        <div class="mclockbox"><span class="mkicker" id="mStatus">READY</span><span class="mclock" id="mClock" role="timer" aria-label="Time left">1:00</span></div>
+        <div class="mptsbox"><span class="mkicker">PTS</span><span class="mpts" id="mPts">0</span></div>
+      </div>
+      <div class="mbar" aria-hidden="true"><i id="mBar"></i></div>
+    </header>
+    <div class="mscallop" aria-hidden="true"></div>
+    <main class="mbody mplaybody">
+      <button class="mswbtn up ck-press" type="button" id="mGot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Guessed</button>
+      <div class="mcardzone">
+        <div class="mcard" id="mCard">
+          <div class="mcardin" id="mCardIn">
+            <div class="mcat"><span class="mcatic" id="mCatIc" aria-hidden="true"></span><span class="mcatname" id="mCatName">Word</span><span class="mcatpts" id="mCatPts">+1</span></div>
+            <div class="mcardtext" aria-live="polite"><span class="mterm" id="mTerm"></span><span class="mmean" id="mMean"></span></div>
+            <p class="mlast" id="mLast" hidden>Time's up! Last word: guess it now.</p>
+          </div>
+          <span class="mstamp" id="mStamp" aria-hidden="true"></span>
+          <div class="mpaused" id="mPausedBox" hidden><span class="mpill grey">PAUSED</span><button class="mbig ck-press" type="button" id="mResume">Resume</button></div>
+        </div>
+      </div>
+      <button class="mswbtn dn ck-press" type="button" id="mSkip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg><span id="mSkipLbl">Skip</span></button>
+      <p class="mtally" id="mTally">Swipe the card to play</p>
+      <button class="mlink mend" type="button" id="mEndRound">End round now</button>
+    </main>
+  </section>
+
+  <!-- 4 · round results -->
+  <section class="mscr" id="mResults" hidden>
+    <header class="mband mresband">
+      <div><span class="mkicker" id="mResRound">ROUND 1 · TEAM</span><span class="mresbig" id="mResPts">+0 points</span></div>
+      <span class="mpill" id="mResTotal">TOTAL 0</span>
+    </header>
+    <div class="mscallop" aria-hidden="true"></div>
+    <main class="mbody">
+      <div class="mhrow"><h1 class="mh2">This round</h1><small>Tap a card to fix it</small></div>
+      <ul class="mreslist" id="mResList"></ul>
+      <div class="mscores" id="mResScores"></div>
+      <div class="mgrow"></div>
+      <button class="mbig ck-press" type="button" id="mNext">Next team</button>
+      <button class="mlink" type="button" id="mToSetup">Back to setup</button>
+    </main>
+  </section>
 </div>
 
 <footer class="foot" aria-labelledby="footH">
@@ -4042,12 +4298,14 @@ function render(){
   $("state").dataset.s=s;$("state").textContent={ready:"Ready",live:"Live",paused:"Paused",over:"Time's up"}[s];
   $("hud").classList.toggle("paused",paused);
   fmt();
+  if(window.mobReady)mRender();
 }
 function fmt(){
   const s=running?remain:+$("secs").value;
   $("timer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
   $("hud").classList.toggle("low",running&&remain<=10);
   const on=running?Math.ceil(60*remain/total):60;TICKS.forEach((t,i)=>t.classList.toggle("off",i>=on));
+  if(window.mobReady&&mScreen==="mPlay")mPlayUI();
 }
 const COVER_ICONS={
   hidden:'<svg viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6 0 9.5 7 9.5 7a17 17 0 0 1-2.9 3.7"/><path d="M6.6 6.6A16.6 16.6 0 0 0 2.5 12S6 19 12 19a9.6 9.6 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
@@ -4055,7 +4313,7 @@ const COVER_ICONS={
   timeup:'<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg>'
 };
 function setCover(icon,title,text){$("coverIc").innerHTML=COVER_ICONS[icon]||"";$("coverTitle").textContent=title;$("coverText").textContent=text}
-function toast(msg,kind){const t=document.createElement("div");t.className="toast"+(kind?" "+kind:"");t.textContent=msg;$("toasts").appendChild(t);setTimeout(()=>t.remove(),1700)}
+function toast(msg,kind){if(window.mobReady&&mobOn()&&mScreen==="mPlay"&&(kind==="ok"||kind==="skip"))return;const t=document.createElement("div");t.className="toast"+(kind?" "+kind:"");t.textContent=msg;$("toasts").appendChild(t);setTimeout(()=>t.remove(),1700)}
 function bump(i){const b=$("team"+i);if(!b)return;const p=b.querySelector(".pts");p.classList.remove("bump");void p.offsetWidth;p.classList.add("bump")}
 
 /* ---------- score panel: manual adjust + history ---------- */
@@ -4193,7 +4451,7 @@ function end(early){
 function finishRound(){
   lastCard=false;$("lastBanner").hidden=true;$("card").classList.remove("lastcall");$("skip").lastChild.textContent=" Skip";
   const got=roundLog.filter(x=>x.ok), pts=roundLog.reduce((a,x)=>a+x.delta,0);
-  const name=teamName(turn);
+  const name=teamName(turn), mTeamId=teams[turn].id, mRound=round;
   {const g=gameLog[gameLog.length-1];if(g&&!g.done){g.done=true;g.pts=pts;g.team=name}renderLog();}
   if(cur){pile.push(cur)}
   $("sumTeam").textContent=name;$("sumPts").textContent=pts;$("sumGot").textContent=got.length;$("sumSkip").textContent=roundLog.length-got.length;
@@ -4201,7 +4459,8 @@ function finishRound(){
   $("sumNext").textContent="Next up: "+teamName(turn)+". Pass the phone to their actor.";
   hidden=true;setCover("timeup","Time's up!","Pass the phone to "+teamName(turn)+", then press Start round.");
   $("start").hidden=false;$("startLbl").textContent="Start next round";$("skip").disabled=$("got").disabled=true;$("skip").hidden=$("got").hidden=true;
-  secsSeg();teamList();draw();save();openModal("summary");
+  secsSeg();teamList();draw();save();
+  if(window.mobReady&&mobOn())mOpenResults(mTeamId,mRound);else openModal("summary");
 }
 function mark(ok){
   if((!running&&!lastCard)||paused||!cur)return;
@@ -4231,6 +4490,7 @@ function doReset(){
   $("start").hidden=false;$("startLbl").textContent="Start round";$("skip").disabled=$("got").disabled=true;$("skip").hidden=$("got").hidden=true;
   gameLog=[];logView=0;renderLog();
   secsSeg();teamList();renderHistory();build();draw();save();toast("New game started");
+  if(window.mobReady){mRes=null;if(mobOn())mShow("mSetup")}
 }
 
 $("start").onclick=start;
@@ -4468,6 +4728,7 @@ function showView(){
   document.title=v==="spy"?"Spy · Crockick":v==="wheel"?"Wheel of Fortune · Crockick":"Crockick";
   if(v==="spy")spyRender();
   if(v==="wheel")wheelRender();
+  if(window.mobReady)mobSync();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",showView);
@@ -4819,6 +5080,164 @@ document.addEventListener("keydown",e=>{if(document.body.dataset.view!=="wheel"|
 function wheelRender(){if(!wBuilt)wBuild();else{wPanel();wLayoutUI();requestAnimationFrame(wDrawAll)}}
 
 {const m=document.querySelector(".t-croc .tmeta span:last-child");if(m)m.textContent=DECK.length.toLocaleString("en-US")+" cards"}
+/* ================= Crockick phone version ================= */
+/* Phones (touch screen, narrow) and the installed app get the swipe version; computers keep the web version. */
+const MOB_Q=window.matchMedia?matchMedia("(max-width: 760px) and (pointer: coarse)"):null;
+function mobWanted(){const q=new URLSearchParams(location.search).get("ui");if(q==="mobile")return true;if(q==="web")return false;return !!(MOB_Q&&MOB_Q.matches)}
+function mobSync(){document.body.classList.toggle("mob",mobWanted());if(mobOn())mRender()}
+if(MOB_Q&&MOB_Q.addEventListener)MOB_Q.addEventListener("change",mobSync);
+function mobOn(){return document.body.classList.contains("mob")&&document.body.dataset.view==="crockick"}
+let mScreen="mSetup", mRes=null, mFlying=false;
+const M_LV=["bz","ba","bb","im"], M_TIMES=[60,90,120];
+function mShow(id){const moved=mScreen!==id;mScreen=id;["mSetup","mTurn","mPlay","mResults"].forEach(s=>$(s).hidden=s!==id);if(moved)window.scrollTo(0,0);mRender()}
+function mClockTxt(s){s=Math.max(0,s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function mVibe(ms){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
+/* which screen fits the game's state right now */
+function mPickScreen(){if(running||lastCard)return "mPlay";if(mRes)return "mResults";return mScreen==="mPlay"?"mTurn":mScreen}
+function mRender(){
+  if(!mobOn())return;
+  const want=mPickScreen();if(want!==mScreen){mShow(want);return}
+  if(mScreen==="mSetup")mSetupUI();else if(mScreen==="mTurn")mTurnUI();else if(mScreen==="mPlay")mPlayUI();else mResultsUI();
+}
+/* ---- 1 · setup ---- */
+function mSetupUI(){
+  const box=$("mTeams"),sig=teams.map(t=>t.id+":"+t.c).join(",")+"|"+teams.length;
+  const ae=document.activeElement,typing=ae&&ae.tagName==="INPUT"&&box.contains(ae);
+  if(box.dataset.sig!==sig&&!typing){
+    box.dataset.sig=sig;box.innerHTML="";
+    teams.forEach((t,i)=>{const r=document.createElement("div");r.className="mteam";
+      r.innerHTML=`<span class="num" aria-hidden="true"></span><div class="tf"><label></label><input maxlength="24" autocomplete="off"></div><button class="rm" type="button">×</button>`;
+      r.querySelector(".num").textContent=i+1;r.querySelector(".num").style.background=TEAM_COLORS[t.c];
+      const id="mteam-"+t.id;r.querySelector("label").textContent="TEAM "+(i+1);r.querySelector("label").htmlFor=id;
+      const inp=r.querySelector("input");inp.id=id;inp.value=t.name;
+      inp.addEventListener("input",()=>{t.name=inp.value;save();mSummaryUI()});
+      inp.addEventListener("change",()=>{if(!t.name.trim()){t.name="Team "+(i+1);inp.value=t.name;save()}});
+      const rm=r.querySelector(".rm");rm.disabled=teams.length<=MIN_TEAMS;rm.setAttribute("aria-label","Remove "+(t.name||"team"));
+      rm.onclick=()=>{removeTeam(t.id);box.dataset.sig="";mSetupUI()};
+      box.appendChild(r)});
+  }
+  $("mTeamCount").textContent=teams.length+" of "+MAX_TEAMS;
+  $("mAddTeam").disabled=teams.length>=MAX_TEAMS;
+  const lb=$("mLevels");lb.innerHTML="";
+  M_LV.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",!!lv[k]);
+    b.innerHTML='<span></span><span class="mdots" aria-hidden="true">'+[0,1,2,3].map(d=>`<i class="${d<=i?"on":""}"></i>`).join("")+"</span>";
+    b.firstChild.textContent=LEVELS[k];
+    b.onclick=()=>{const next={...lv,[k]:!lv[k]};if(!Object.keys(LEVELS).some(j=>next[j]&&allCards().some(x=>x.ls.includes(j)))){toast("Keep at least one level on");return}
+      lv=next;save();lvchips();build();draw();mSetupUI()};
+    lb.appendChild(b)});
+  const tb=$("mTimes");tb.innerHTML="";const cur=+$("secs").value;const opts=M_TIMES.includes(cur)?M_TIMES:M_TIMES.concat([cur]);
+  tb.style.setProperty("--n",opts.length);
+  opts.forEach(v=>{const b=document.createElement("button");b.type="button";b.textContent=mClockTxt(v);b.setAttribute("aria-pressed",v===cur);
+    b.onclick=()=>{setSecs(v);customOpen=false;save();secsSeg();render();mSetupUI()};tb.appendChild(b)});
+  const played=teams.some(t=>t.score)||round>1||turn>0;
+  $("mStartGame").textContent=played?"Continue game":"Start game";
+  $("mNewGame").hidden=!played;
+  mSummaryUI();
+}
+function mSummaryUI(){
+  const lvs=M_LV.filter(k=>lv[k]).map(k=>LEVELS[k]);
+  $("mSummary").textContent=teams.length+" teams · "+(lvs.length===4?"All levels":lvs.length?lvs.join(", "):"General cards")+" · "+mClockTxt(+$("secs").value)+" per round";
+}
+$("mAddTeam").onclick=()=>{addTeam();$("mTeams").dataset.sig="";mSetupUI();const last=$("mTeams").lastElementChild;const inp=last&&last.querySelector("input");if(inp){inp.focus();inp.select()}};
+$("mStartGame").onclick=()=>{if(!pile.length&&!cur)build();mShow("mTurn")};
+$("mNewGame").onclick=()=>openModal("confirm");
+$("mCardsBtn").onclick=openDb;
+$("mSetBtn").onclick=()=>{teamList();penaltyUI();openModal("settings")};
+/* ---- 2 · your turn ---- */
+function mScoresInto(el,hi){
+  el.innerHTML="";teams.forEach((t,i)=>{const d=document.createElement("div");d.className="mscore"+(i===hi?" now":"");
+    d.innerHTML="<span></span><b></b>";d.firstChild.textContent=teamName(i);d.lastChild.textContent=t.score;el.appendChild(d)});
+}
+function mTurnUI(){
+  $("mTurnRound").textContent="ROUND "+round;$("mTurnTeam").textContent=teamName(turn);
+  $("mDnTxt").textContent=penalty.on?"Skip the card · −"+penalty.amt+(penalty.amt===1?" point":" points"):"Skip the card · no penalty";
+  $("mUpTxt").textContent="They guessed it · +1 to +4 points";
+  mScoresInto($("mScores"),turn);
+  $("mStartRound").disabled=!cur&&!pile.length;
+}
+$("mHome").onclick=()=>mShow("mSetup");
+$("mStartRound").onclick=()=>{start();if(running)mShow("mPlay")};
+$("mFixScores").onclick=()=>{adjTeam=teams[turn].id;adjChips();renderHistory();$("adjErr").hidden=true;openModal("scoreModal")};
+/* ---- 3 · the round ---- */
+function mPlayUI(){
+  const card=cur, c=card?CATS[card.c]:CATS.word, k=card?card.c:"word";
+  const el=$("mCard");el.style.setProperty("--cc",c.color);
+  $("mCatIc").innerHTML=ICONS[k];$("mCatName").textContent=k==="sl"?"Slang":c.name;
+  $("mCatPts").textContent="+"+(card?ptsOf(card):c.pts);
+  $("mTerm").textContent=card?card.t:"No cards";$("mMean").textContent=card?card.m:"Turn on more decks or levels in Settings.";
+  $("mLast").hidden=!lastCard;
+  $("mSkipLbl").textContent=lastCard?"Not guessed":"Skip";
+  const s=running?remain:0, lowT=running&&remain<=15;
+  $("mClock").textContent=mClockTxt(running?remain:(lastCard?0:+$("secs").value));$("mClock").classList.toggle("low",lowT||lastCard);
+  $("mBar").style.width=(running&&total?Math.max(0,Math.round(remain/total*100)):lastCard?0:100)+"%";$("mBar").classList.toggle("low",lowT||lastCard);
+  $("mStatus").textContent=lastCard?"LAST WORD":paused?"PAUSED":lowT?"HURRY UP":teamName(turn).toUpperCase();
+  const pts=roundLog.reduce((a,x)=>a+x.delta,0);$("mPts").textContent=pts;
+  const got=roundLog.filter(x=>x.ok).length;
+  $("mTally").textContent=roundLog.length?got+" guessed · "+(roundLog.length-got)+" skipped":"Swipe up if they guess it, down to skip";
+  $("mPause").disabled=!running;$("mPause").classList.toggle("is-paused",paused);$("mPause").setAttribute("aria-label",paused?"Resume":"Pause");
+  $("mPausedBox").hidden=!paused;el.classList.toggle("paused",paused);
+  $("mGot").disabled=$("mSkip").disabled=paused||!card;
+  $("mEndRound").hidden=!running;
+}
+function mPauseToggle(){if(!running)return;paused=!paused;$("skip").disabled=$("got").disabled=paused;hidden=paused;if(paused)setCover("paused","Paused","The timer is stopped. Press Resume to continue.");render()}
+$("mPause").onclick=mPauseToggle;$("mResume").onclick=mPauseToggle;
+$("mEndRound").onclick=e=>{const b=e.currentTarget;if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to end the round";setTimeout(()=>{b.dataset.armed="";b.textContent="End round now"},2500);return}
+  b.dataset.armed="";b.textContent="End round now";if(running){end(true)}};
+/* swipe */
+(function(){
+  const card=$("mCard"),stamp=$("mStamp"),up=$("mGot"),dn=$("mSkip"),TH=90;let y0=0,dy=0,drag=false;
+  const setDy=v=>{dy=v;card.style.transform="translateY("+v+"px)";card.style.opacity=String(1-Math.min(Math.abs(v)/500,.35));
+    const show=Math.abs(v)>24;stamp.style.opacity=show?String(Math.min(Math.abs(v)/TH,1)):"0";
+    stamp.textContent=v<0?"GUESSED":(lastCard?"NOT GUESSED":"SKIP");stamp.style.color=v<0?"var(--mg)":"var(--mmut)";
+    up.classList.toggle("hot",v<=-TH);dn.classList.toggle("hot",v>=TH)};
+  const reset=()=>{card.classList.add("back");setDy(0);stamp.style.opacity="0";setTimeout(()=>card.classList.remove("back"),220)};
+  card.addEventListener("pointerdown",e=>{if(mFlying||paused||!cur||(!running&&!lastCard))return;drag=true;y0=e.clientY;card.classList.remove("back","enter");try{card.setPointerCapture(e.pointerId)}catch(x){}});
+  card.addEventListener("pointermove",e=>{if(drag)setDy(e.clientY-y0)});
+  const endDrag=()=>{if(!drag)return;drag=false;if(dy<=-TH)mCommit(true);else if(dy>=TH)mCommit(false);else reset()};
+  card.addEventListener("pointerup",endDrag);card.addEventListener("pointercancel",endDrag);
+  window.mCommit=function(ok){
+    if(mFlying||paused||!cur||(!running&&!lastCard))return;mFlying=true;
+    up.classList.remove("hot");dn.classList.remove("hot");stamp.style.opacity="0";
+    card.classList.add("fly");card.style.transform="translateY("+(ok?-760:760)+"px)";mVibe(ok?35:15);
+    setTimeout(()=>{card.classList.remove("fly");card.style.transform="";card.style.opacity="";mFlying=false;mark(ok);
+      card.classList.remove("enter");void card.offsetWidth;card.classList.add("enter");mRender()},220);
+  };
+})();
+$("mGot").onclick=()=>mCommit(true);$("mSkip").onclick=()=>mCommit(false);
+/* ---- 4 · results ---- */
+function mOpenResults(teamId,roundNo){
+  mRes={teamId,round:roundNo,log:gameLog[gameLog.length-1]||null,cards:roundLog.map(x=>({t:x.t,c:x.c,ok:x.ok,delta:x.delta,p:ptsOf(x)}))};
+  mShow("mResults");
+}
+function mResultsUI(){
+  if(!mRes)return;const t=teamById(mRes.teamId),i=teams.indexOf(t);
+  const pts=mRes.cards.reduce((a,x)=>a+x.delta,0);
+  $("mResRound").textContent="ROUND "+mRes.round+" · "+(i>=0?teamName(i).toUpperCase():"");
+  $("mResPts").textContent=(pts>=0?"+":"−")+Math.abs(pts)+(Math.abs(pts)===1?" point":" points");
+  $("mResTotal").textContent="TOTAL "+(t?t.score:0);
+  const ul=$("mResList");ul.innerHTML="";
+  if(!mRes.cards.length){const li=document.createElement("li");li.className="empty";li.textContent="No cards played this round.";ul.appendChild(li)}
+  mRes.cards.forEach((x,j)=>{const li=document.createElement("li"),b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",x.ok);
+    b.innerHTML='<span class="w"><b></b><small></small></span><span class="chip"></span>';
+    b.querySelector("b").textContent=x.t;const sm=b.querySelector("small");sm.textContent=x.c==="sl"?"Slang":CATS[x.c].name;sm.style.color=CATS[x.c].color;
+    b.querySelector(".chip").textContent=x.ok?"✓ Guessed  +"+x.delta:(x.delta?"Skipped  "+fmtPts(x.delta):"Skipped");
+    b.onclick=()=>mFlip(j);li.appendChild(b);ul.appendChild(li)});
+  mScoresInto($("mResScores"),i);
+  $("mNext").textContent="Next: "+teamName(turn);
+}
+function mFlip(j){
+  const x=mRes.cards[j];if(!x)return;
+  const was=x.delta, ok=!x.ok, now=ok?x.p:(penalty.on?-penalty.amt:0);
+  applyScore(mRes.teamId,now-was,(ok?"Fixed to guessed: ":"Fixed to skipped: ")+x.t);
+  x.ok=ok;x.delta=now;
+  if(mRes.log){const lc=mRes.log.cards.find(c=>c.t===x.t&&c.ok===!ok);if(lc){lc.ok=ok;lc.delta=now;lc.last=false}mRes.log.pts=mRes.cards.reduce((a,c)=>a+c.delta,0);renderLog()}
+  save();mResultsUI();
+}
+$("mNext").onclick=()=>{mRes=null;closeModal("summary");mShow("mTurn")};
+$("mToSetup").onclick=()=>{mRes=null;closeModal("summary");mShow("mSetup")};
+mobSync();
+
+window.mobReady=true;mobSync();
 showView();
 </script>
 
