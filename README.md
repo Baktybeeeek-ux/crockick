@@ -6,6 +6,7 @@
 - **Crockick:** act it, say it, guess it! Teams explain or act out cards before time runs out. 2–10 teams.
 - **Spy:** everyone gets the same card, except the spy. Talk, ask questions and find who it is. 3–20 players, one phone.
 - **Wheel of Fortune:** type any names, topics or tasks and spin to pick one at random. Up to 4 wheels.
+- **Jeopardy:** make your own question boards (up to 6×6, Daily Doubles, Final Jeopardy), fill them from the card library, then play with up to 10 teams. Games are saved on the device and can be shared by link, downloaded, imported and printed.
 - **Who Am I?:** coming soon.
 
 All games share one card library (words, phrasal verbs, idioms, situations, slang, characters, places, jobs) across four levels: Baby Zero, Baby A, Baby B, Imitators.
