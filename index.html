@@ -1136,6 +1136,28 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
 @media (max-width:760px){.jpfinalf{grid-template-columns:1fr}}
 .jpfinal .switch{flex:none}
 .jpcellb{display:flex;flex-direction:column;gap:var(--s3)}
+.jpmedia{display:flex;flex-direction:column;gap:var(--s2);padding:var(--s3);border-radius:14px;background:var(--surface-2)}
+.jpmediah{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.seg.jpmseg{grid-template-columns:repeat(4,auto);flex:1 1 260px;max-width:360px}
+.seg.jpmseg button{min-height:34px;font-size:var(--fs-xs);padding:4px 8px}
+.jpmediab{display:flex;flex-direction:column;gap:6px}
+.jpmediab[hidden]{display:none}
+.jpmrow{display:flex;gap:6px;flex-wrap:wrap}
+.jpmrow .input{flex:1 1 220px;min-width:0}
+.jpmhelp{margin:0;font-size:var(--fs-xs);font-weight:600;color:var(--muted)}
+.jpmprev{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.jpmprev:empty{display:none}
+.jpmprev .jpimg{max-height:160px;max-width:100%;border-radius:10px;background:#fff}
+.jpmprev .jpopen{min-height:36px;font-size:var(--fs-sm)}
+.jpmok{margin:0;font-size:var(--fs-sm);font-weight:700;color:var(--secondary)}
+.jpmerr{margin:0;font-size:var(--fs-sm);font-weight:700;color:var(--danger)}
+.jpcell .mmark{position:absolute;top:6px;left:8px;font-family:var(--font);font-style:normal;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.9);color:#17577F;text-shadow:none;letter-spacing:.04em}
+.jpcell .ddmark{font-style:normal}
+.jpshow{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:100%}
+.jpshow[hidden]{display:none}
+.jpvideo{width:min(100%,860px);aspect-ratio:16/9;height:auto;max-height:52vh;border:0;border-radius:16px;background:#000}
+.jpshow .jpopen{background:rgba(255,255,255,.14);color:#fff;--b:rgba(255,255,255,.14);--t:#fff;text-decoration:none}
+.jpshow .jpmerr{color:#FFB4A8}
 .jpcellb .switch{flex:none}
 .jpcellbtns{display:flex;gap:var(--s2);justify-content:space-between;flex-wrap:wrap}
 .jpsharelink{font-size:var(--fs-xs);word-break:break-all}
@@ -1773,8 +1795,9 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
     </div>
     <div class="jpqa" id="jpQA">
       <p class="jpq" id="jpClueQ"></p>
-      <img class="jpimg" id="jpClueImg" alt="" hidden>
+      <div class="jpshow" id="jpClueQM" hidden></div>
       <p class="jpa" id="jpClueA" hidden></p>
+      <div class="jpshow" id="jpClueAM" hidden></div>
       <button class="btn btn-lg jpreveal" type="button" id="jpReveal">Show answer <kbd>Space</kbd></button>
       <div class="jpaward" id="jpAward" hidden><p class="jpawardh">Who got it right?</p><div class="jpawardbtns" id="jpAwardBtns"></div></div>
     </div>
@@ -1805,7 +1828,22 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
     <div class="sheet-b jpcellb">
     <div class="field"><label for="jpCellQ">Question (what the class sees)</label><textarea class="input" id="jpCellQ" rows="3" maxlength="400"></textarea></div>
     <div class="field"><label for="jpCellA">Answer</label><input class="input" id="jpCellA" maxlength="200"></div>
-    <div class="field"><label for="jpCellImg">Picture link (optional)</label><input class="input" id="jpCellImg" maxlength="500" placeholder="https://…/picture.jpg"></div>
+    <div class="jpmedia" id="jpQMBox">
+      <div class="jpmediah"><span class="group-l" id="jpQML">Show with the question</span><div class="seg jpmseg" id="jpQMSeg" role="group" aria-labelledby="jpQML"><button type="button" data-t="">None</button><button type="button" data-t="image">Picture</button><button type="button" data-t="video">Video</button><button type="button" data-t="link">Link</button></div></div>
+      <div class="jpmediab" id="jpQMBody" hidden>
+        <div class="jpmrow"><input class="input" id="jpQMUrl" maxlength="1000" autocomplete="off" aria-labelledby="jpQML"><button class="btn btn-sm" type="button" id="jpQMUp">Upload picture</button><input type="file" id="jpQMFile" accept="image/*" hidden></div>
+        <p class="jpmhelp" id="jpQMHelp"></p>
+        <div class="jpmprev" id="jpQMPrev"></div>
+      </div>
+    </div>
+    <div class="jpmedia" id="jpAMBox">
+      <div class="jpmediah"><span class="group-l" id="jpAML">Show with the answer</span><div class="seg jpmseg" id="jpAMSeg" role="group" aria-labelledby="jpAML"><button type="button" data-t="">None</button><button type="button" data-t="image">Picture</button><button type="button" data-t="video">Video</button><button type="button" data-t="link">Link</button></div></div>
+      <div class="jpmediab" id="jpAMBody" hidden>
+        <div class="jpmrow"><input class="input" id="jpAMUrl" maxlength="1000" autocomplete="off" aria-labelledby="jpAML"><button class="btn btn-sm" type="button" id="jpAMUp">Upload picture</button><input type="file" id="jpAMFile" accept="image/*" hidden></div>
+        <p class="jpmhelp" id="jpAMHelp"></p>
+        <div class="jpmprev" id="jpAMPrev"></div>
+      </div>
+    </div>
     <label class="switch"><input type="checkbox" id="jpCellDD"> Daily Double (the team bets on this one)</label>
     </div>
     <div class="sheet-f jpcellbtns"><button class="btn" type="button" id="jpCellPrev">← Previous</button><button class="btn btn-success" type="button" id="jpCellOk">Done</button><button class="btn" type="button" id="jpCellNext">Next →</button></div>
@@ -5550,18 +5588,27 @@ let jpCfg=(()=>{try{return JSON.parse(localStorage.getItem("jp-cfg")||"null")||{
 jpCfg.teams=Array.isArray(jpCfg.teams)&&jpCfg.teams.length?jpCfg.teams.slice(0,10):["Team 1","Team 2","Team 3"];
 jpCfg.time=[0,15,30,60].includes(+jpCfg.time)?+jpCfg.time:0;jpCfg.minus=!!jpCfg.minus;
 let jpCur=null, jpScreen="jpLib", jpSaveT=null, jpCellAt=null, jpTick=null, jpOpen=null;
-function jpPersist(){try{localStorage.setItem("jp-boards",JSON.stringify(jpBoards))}catch(e){toast("Couldn't save: the browser storage is full")}}
+function jpPersist(){try{localStorage.setItem("jp-boards",JSON.stringify(jpBoards))}catch(e){toast("Couldn't save: the browser storage is full. Use picture links instead of uploads, or delete old games.")}}
 function jpSaveGame(){try{localStorage.setItem("jp-game",JSON.stringify(jpGame))}catch(e){}}
 function jpSaveCfg(){try{localStorage.setItem("jp-cfg",JSON.stringify(jpCfg))}catch(e){}}
-function jpBlank(cols,rows){return {id:jpUid(),title:"Untitled game",v0:100,vs:100,rows,cats:Array.from({length:cols},(_,i)=>({name:"",q:Array.from({length:rows},()=>({q:"",a:"",img:"",dd:false}))})),final:{on:false,cat:"",q:"",a:""},updated:Date.now()}}
+function jpBlank(cols,rows){return {id:jpUid(),title:"Untitled game",v0:100,vs:100,rows,cats:Array.from({length:cols},(_,i)=>({name:"",q:Array.from({length:rows},()=>({q:"",a:"",qm:null,am:null,dd:false}))})),final:{on:false,cat:"",q:"",a:""},updated:Date.now()}}
 function jpVal(b,r){return b.v0+b.vs*r}
 function jpFilled(b){let n=0,t=0;b.cats.forEach(c=>c.q.forEach(x=>{t++;if(x.q.trim()&&x.a.trim())n++}));return [n,t]}
+/* pictures, videos and links shown with a question or an answer: {t:"image"|"video"|"link", u:"…"} */
+const JP_IMG_DATA=/^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/;
+function jpMClean(m,legacy){
+  if(!m&&legacy)m={t:"image",u:legacy};
+  if(!m||typeof m!=="object")return null;const t=["image","video","link"].includes(m.t)?m.t:null,u=String(m.u||"").trim();if(!t||!u)return null;
+  if(t==="image"&&JP_IMG_DATA.test(u)&&u.length<1800000)return {t,u};
+  if(/^https?:\/\/[^\s"'<>]+$/i.test(u)&&u.length<=1000)return {t,u};
+  return null;
+}
 function jpClean(b){/* checks a game read from a file or a link */
   if(!b||typeof b!=="object"||!Array.isArray(b.cats))return null;
   const rows=Math.max(1,Math.min(JP_MAXR,parseInt(b.rows,10)||(b.cats[0]&&b.cats[0].q&&b.cats[0].q.length)||5));
   const s=(v,n)=>String(v==null?"":v).slice(0,n);
   const out={id:jpUid(),title:s(b.title,60)||"Imported game",v0:Math.max(1,Math.min(10000,parseInt(b.v0,10)||100)),vs:Math.max(0,Math.min(10000,parseInt(b.vs,10)||0)),rows,
-    cats:b.cats.slice(0,JP_MAXC).map(c=>({name:s(c&&c.name,40),q:Array.from({length:rows},(_,r)=>{const x=(c&&Array.isArray(c.q)&&c.q[r])||{};return {q:s(x.q,400),a:s(x.a,200),img:/^https?:\/\//i.test(x.img||"")?s(x.img,500):"",dd:!!x.dd}})})),
+    cats:b.cats.slice(0,JP_MAXC).map(c=>({name:s(c&&c.name,40),q:Array.from({length:rows},(_,r)=>{const x=(c&&Array.isArray(c.q)&&c.q[r])||{};return {q:s(x.q,400),a:s(x.a,200),qm:jpMClean(x.qm,x.img),am:jpMClean(x.am),dd:!!x.dd}})})),
     final:{on:!!(b.final&&b.final.on),cat:s(b.final&&b.final.cat,40),q:s(b.final&&b.final.q,400),a:s(b.final&&b.final.a,200)},updated:Date.now()};
   if(!out.cats.length)return null;return out;
 }
@@ -5572,9 +5619,9 @@ function jpPick(kind,r,used){
   if(kind==="syn")pool=pool.filter(x=>x.sy&&x.sy.length>=1);if(kind==="ant")pool=pool.filter(x=>x.an&&x.an.length>=1);
   const lvPool=pool.filter(x=>x.ls.includes(want));const p=lvPool.length?lvPool:pool;if(!p.length)return null;
   const x=p[Math.floor(Math.random()*p.length)];used.add(x.t.toLowerCase());
-  if(kind==="syn")return {q:"A word that means the same as “"+x.t+"”",a:x.sy.slice(0,3).join(", "),img:"",dd:false};
-  if(kind==="ant")return {q:"The opposite of “"+x.t+"”",a:x.an.slice(0,3).join(", "),img:"",dd:false};
-  return {q:x.m||x.t,a:x.t,img:"",dd:false};
+  if(kind==="syn")return {q:"A word that means the same as “"+x.t+"”",a:x.sy.slice(0,3).join(", "),qm:null,am:null,dd:false};
+  if(kind==="ant")return {q:"The opposite of “"+x.t+"”",a:x.an.slice(0,3).join(", "),qm:null,am:null,dd:false};
+  return {q:x.m||x.t,a:x.t,qm:null,am:null,dd:false};
 }
 function jpFillCat(b,ci,kind,onlyEmpty){
   const c=b.cats[ci],used=new Set();b.cats.forEach(cc=>cc.q.forEach(x=>{if(x.a)used.add(x.a.toLowerCase())}));
@@ -5587,6 +5634,7 @@ function jpSample(){
   b.cats[2].q[3].dd=true;b.final={on:true,cat:"Idioms",q:"What do you call it when something is very easy?",a:"a piece of cake"};
   return b;
 }
+if(jpBoards)jpBoards.forEach(b=>b.cats.forEach(c=>c.q.forEach(x=>{if(x.img&&!x.qm)x.qm=jpMClean(null,x.img);delete x.img;if(x.qm===undefined)x.qm=null;if(x.am===undefined)x.am=null})));
 if(!jpBoards){jpBoards=[];try{jpBoards.push(jpSample())}catch(e){}jpPersist()}
 /* ---- screens ---- */
 function jpShow(id){const moved=jpScreen!==id;jpScreen=id;["jpLib","jpEdit","jpSetup","jpPlay"].forEach(s=>$(s).hidden=s!==id);if(moved)window.scrollTo(0,0)}
@@ -5639,15 +5687,16 @@ function jpEdGrid(){
   b.cats.forEach((c,ci)=>{const h=document.createElement("div");h.className="jpcat";const inp=document.createElement("input");inp.maxLength=40;inp.placeholder="Category "+(ci+1);inp.value=c.name;inp.setAttribute("aria-label","Category "+(ci+1)+" name");
     inp.oninput=()=>{c.name=inp.value;jpTouch()};h.appendChild(inp);g.appendChild(h)});
   for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],btn=document.createElement("button");btn.type="button";const ok=x.q.trim()&&x.a.trim();btn.className="jpcell"+(ok?"":" empty");
-    btn.innerHTML="<span></span><small></small>"+(x.dd?'<em class="ddmark">DD</em>':"");btn.firstChild.textContent=jpVal(b,r);btn.querySelector("small").textContent=ok?x.q:"Tap to write";
+    const mk=[x.qm,x.am].filter(Boolean).map(m=>({image:"PIC",video:"VIDEO",link:"LINK"})[m.t]);
+    btn.innerHTML="<span></span><small></small>"+(x.dd?'<em class="ddmark">DD</em>':"")+(mk.length?'<em class="mmark">'+[...new Set(mk)].join(" · ")+'</em>':"");btn.firstChild.textContent=jpVal(b,r);btn.querySelector("small").textContent=ok?x.q:"Tap to write";
     btn.setAttribute("aria-label",(c.name||"Category "+(ci+1))+", "+jpVal(b,r)+" points"+(ok?"":" (empty)"));
     btn.onclick=()=>jpCellOpen(ci,r);g.appendChild(btn)});
 }
 $("jpTitle").oninput=()=>{jpCur.title=$("jpTitle").value.slice(0,60);jpTouch()};
 function jpResize(dc,dr){const b=jpCur;
-  if(dc>0&&b.cats.length<JP_MAXC)b.cats.push({name:"",q:Array.from({length:b.rows},()=>({q:"",a:"",img:"",dd:false}))});
+  if(dc>0&&b.cats.length<JP_MAXC)b.cats.push({name:"",q:Array.from({length:b.rows},()=>({q:"",a:"",qm:null,am:null,dd:false}))});
   if(dc<0&&b.cats.length>1)b.cats.pop();
-  if(dr>0&&b.rows<JP_MAXR){b.rows++;b.cats.forEach(c=>c.q.push({q:"",a:"",img:"",dd:false}))}
+  if(dr>0&&b.rows<JP_MAXR){b.rows++;b.cats.forEach(c=>c.q.push({q:"",a:"",qm:null,am:null,dd:false}))}
   if(dr<0&&b.rows>1){b.rows--;b.cats.forEach(c=>c.q.pop())}
   jpTouch();jpEditUI()}
 $("jpColsM").onclick=()=>jpResize(-1,0);$("jpColsP").onclick=()=>jpResize(1,0);$("jpRowsM").onclick=()=>jpResize(0,-1);$("jpRowsP").onclick=()=>jpResize(0,1);
@@ -5680,11 +5729,57 @@ $("jpEditBack").onclick=()=>{jpPersist();jpLibUI()};
 $("jpEditPlay").onclick=()=>{jpPersist();jpSetupUI()};
 function jpCellOpen(ci,r){jpCellAt=[ci,r];const b=jpCur,x=b.cats[ci].q[r];
   $("jpCellH").textContent=(b.cats[ci].name||"Category "+(ci+1))+" · "+jpVal(b,r);
-  $("jpCellQ").value=x.q;$("jpCellA").value=x.a;$("jpCellImg").value=x.img||"";$("jpCellDD").checked=!!x.dd;
+  $("jpCellQ").value=x.q;$("jpCellA").value=x.a;jpMEd.q=x.qm?{...x.qm}:null;jpMEd.a=x.am?{...x.am}:null;jpMUI("q");jpMUI("a");$("jpCellDD").checked=!!x.dd;
   $("jpCellPrev").disabled=ci===0&&r===0;$("jpCellNext").disabled=ci===b.cats.length-1&&r===b.rows-1;
   $("jpCell").hidden=false;$("jpCellQ").focus()}
 function jpCellSave(){if(!jpCellAt)return;const [ci,r]=jpCellAt,x=jpCur.cats[ci].q[r];x.q=$("jpCellQ").value.slice(0,400);x.a=$("jpCellA").value.slice(0,200);
-  const img=$("jpCellImg").value.trim();x.img=/^https?:\/\//i.test(img)?img.slice(0,500):"";if(img&&!x.img)toast("The picture link must start with http:// or https://");x.dd=$("jpCellDD").checked;jpTouch();jpEdGrid()}
+  x.qm=jpMRead("q");x.am=jpMRead("a");x.dd=$("jpCellDD").checked;jpTouch();jpEdGrid()}
+const jpMEd={q:null,a:null};
+const JP_MHELP={image:"Paste a picture link (https://…), or upload a picture from this device.",video:"Paste a YouTube, Vimeo or video file link (.mp4, .webm).",link:"Paste any web page link. It shows as a button that opens the page."};
+function jpMId(k){return k==="q"?"jpQM":"jpAM"}
+function jpMUI(k){
+  const p=jpMId(k),m=jpMEd[k],t=m?m.t:"";
+  $(p+"Seg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+  $(p+"Body").hidden=!t;if(!t)return;
+  const isData=m.u&&m.u.startsWith("data:");
+  $(p+"Url").value=isData?"":(m.u||"");$(p+"Url").placeholder=isData?"Uploaded picture (paste a link to replace it)":t==="image"?"https://…/picture.jpg":t==="video"?"https://www.youtube.com/watch?v=…":"https://…";
+  $(p+"Up").hidden=t!=="image";$(p+"Help").textContent=JP_MHELP[t];
+  jpMShow($(p+"Prev"),m.u?m:null,true);
+}
+function jpMRead(k){const m=jpMEd[k];if(!m||!m.t)return null;const r=jpMClean(m);if(m.u&&!r)toast("That "+(m.t==="image"?"picture":m.t)+" link doesn't look right. It must start with https://");return r}
+["q","a"].forEach(k=>{const p=jpMId(k);
+  $(p+"Seg").querySelectorAll("button").forEach(b=>b.onclick=()=>{const t=b.dataset.t;jpMEd[k]=t?{t,u:jpMEd[k]&&jpMEd[k].t===t?jpMEd[k].u:""}:null;jpMUI(k);if(t)$(p+"Url").focus()});
+  $(p+"Url").addEventListener("input",()=>{if(!jpMEd[k])return;jpMEd[k].u=$(p+"Url").value.trim();jpMShow($(p+"Prev"),jpMClean(jpMEd[k]),true)});
+  $(p+"Up").onclick=()=>$(p+"File").click();
+  $(p+"File").onchange=async()=>{const f=$(p+"File").files[0];$(p+"File").value="";if(!f)return;
+    if(!/^image\//.test(f.type)){toast("Please choose a picture file");return}
+    try{const u=await jpShrink(f);jpMEd[k]={t:"image",u};jpMUI(k);toast("Picture added","ok")}catch(e){toast("That picture couldn't be read")}};
+});
+/* uploaded pictures are made smaller so many fit in the browser's storage */
+function jpShrink(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file),im=new Image();
+  im.onload=()=>{const max=1100,sc=Math.min(1,max/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc));
+    const cv=document.createElement("canvas");cv.width=w;cv.height=h;const x=cv.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);URL.revokeObjectURL(url);
+    let q=.82,d=cv.toDataURL("image/jpeg",q);while(d.length>600000&&q>.4){q-=.12;d=cv.toDataURL("image/jpeg",q)}res(d)};
+  im.onerror=()=>{URL.revokeObjectURL(url);rej()};im.src=url})}
+function jpVideoEmbed(u){
+  let m=u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,15})/);
+  if(m){const t=u.match(/[?&](?:t|start)=(\d+)/);return {kind:"frame",src:"https://www.youtube-nocookie.com/embed/"+m[1]+"?rel=0"+(t?"&start="+t[1]:"")}}
+  m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);if(m)return {kind:"frame",src:"https://player.vimeo.com/video/"+m[1]};
+  if(/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(u))return {kind:"file",src:u};
+  return null;
+}
+function jpMShow(box,m,small){
+  box.innerHTML="";box.hidden=!m;if(!m)return;
+  const open=(label)=>{const a=document.createElement("a");a.className="btn jpopen";a.href=m.u;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;return a};
+  if(m.t==="image"){const im=document.createElement("img");im.className="jpimg";im.alt="";im.src=m.u;im.onerror=()=>{box.innerHTML="";const p=document.createElement("p");p.className="jpmerr";p.textContent="The picture didn't load. Check the link.";box.appendChild(p)};box.appendChild(im);return}
+  if(m.t==="link"){let host="";try{host=new URL(m.u).hostname.replace(/^www\./,"")}catch(e){}box.appendChild(open("Open link"+(host?" · "+host:"")+" ↗"));return}
+  const v=jpVideoEmbed(m.u);
+  if(v&&v.kind==="frame"&&!small){const f=document.createElement("iframe");f.className="jpvideo";f.src=v.src;f.title="Video";f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";box.appendChild(f)}
+  else if(v&&v.kind==="file"){const el=document.createElement("video");el.className="jpvideo";el.src=v.src;el.controls=true;el.playsInline=true;el.preload="metadata";box.appendChild(el)}
+  else if(small&&v){const p=document.createElement("p");p.className="jpmok";p.textContent="✓ Video found. It plays during the game.";box.appendChild(p);return}
+  else if(!v){const p=document.createElement("p");p.className="jpmerr";p.textContent=small?"This isn't a YouTube, Vimeo or video file link. It will show as a button that opens the page.":"";if(small)box.appendChild(p)}
+  box.appendChild(open("Open video in a new tab ↗"));
+}
 function jpCellMove(d){jpCellSave();let [ci,r]=jpCellAt;const C=jpCur.cats.length;let idx=ci*jpCur.rows+r+d;idx=Math.max(0,Math.min(C*jpCur.rows-1,idx));jpCellOpen(Math.floor(idx/jpCur.rows),idx%jpCur.rows)}
 $("jpCellOk").onclick=()=>{jpCellSave();$("jpCell").hidden=true;jpCellAt=null};
 $("jpCellPrev").onclick=()=>jpCellMove(-1);$("jpCellNext").onclick=()=>jpCellMove(1);
@@ -5692,8 +5787,10 @@ $("jpCell").addEventListener("click",e=>{if(e.target===$("jpCell")||e.target.clo
 /* ---- share, download, print ---- */
 function jpExport(b){const c=JSON.parse(JSON.stringify(b));delete c.id;return c}
 function jpShareOpen(b){
-  const data=btoa(unescape(encodeURIComponent(JSON.stringify(jpExport(b))))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  const ex=jpExport(b);let dropped=0;ex.cats.forEach(c=>c.q.forEach(x=>["qm","am"].forEach(k=>{if(x[k]&&x[k].u.startsWith("data:")){x[k]=null;dropped++}})));
+  const data=btoa(unescape(encodeURIComponent(JSON.stringify(ex)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
   const base=location.href.split("#")[0];$("jpShareLink").value=base+"#jeopardy/import="+data;$("jpShare").dataset.id=b.id;$("jpShare").hidden=false;$("jpShareCopy").focus();
+  $("jpShareLink").previousElementSibling.textContent=dropped?"Anyone who opens this link sees the game and can save their own copy. Pictures uploaded from your device ("+dropped+") are too big for a link: use Download file to share them too.":"Anyone who opens this link sees the game and can save their own copy.";
   if(/claude\.ai|claudeusercontent/.test(location.hostname))$("jpShareLink").previousElementSibling.textContent="Links work best from the GitHub version of Crockick. Here, use Download file and Import file instead.";
 }
 $("jpShareCopy").onclick=async()=>{const t=$("jpShareLink").value;try{await navigator.clipboard.writeText(t);toast("Link copied","ok")}catch(e){$("jpShareLink").select();try{document.execCommand("copy");toast("Link copied","ok")}catch(x){toast("Select the link and copy it")}}};
@@ -5703,7 +5800,8 @@ $("jpShareFile").onclick=async()=>{const b=jpBoards.find(x=>x.id===$("jpShare").
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 function jpPrint(b){const p=$("jpPrint");p.innerHTML="";const h=document.createElement("h1");h.textContent=b.title;p.appendChild(h);
   b.cats.forEach((c,ci)=>{const h2=document.createElement("h2");h2.textContent=c.name||"Category "+(ci+1);p.appendChild(h2);const t=document.createElement("table");
-    c.q.forEach((x,r)=>{const tr=t.insertRow();tr.insertCell().textContent=jpVal(b,r);tr.insertCell().textContent=x.q;tr.insertCell().textContent=x.a});p.appendChild(t)});
+    const ml=m=>m?(m.u.startsWith("data:")?" [picture]":" ["+({image:"picture",video:"video",link:"link"})[m.t]+": "+m.u+"]"):"";
+    c.q.forEach((x,r)=>{const tr=t.insertRow();tr.insertCell().textContent=jpVal(b,r);tr.insertCell().textContent=x.q+ml(x.qm);tr.insertCell().textContent=x.a+ml(x.am)});p.appendChild(t)});
   if(b.final.on){const h2=document.createElement("h2");h2.textContent="Final Jeopardy: "+b.final.cat;p.appendChild(h2);const t=document.createElement("table"),tr=t.insertRow();tr.insertCell().textContent="Final";tr.insertCell().textContent=b.final.q;tr.insertCell().textContent=b.final.a;p.appendChild(t)}
   document.body.classList.add("jp-printing");setTimeout(()=>{try{window.print()}catch(e){toast("Printing isn't allowed here")}document.body.classList.remove("jp-printing")},50)}
 /* ---- play setup ---- */
@@ -5755,7 +5853,7 @@ $("jpEnd").onclick=()=>jpWin();
 function jpClueOpen(ci,r){
   const b=jpCur,x=b.cats[ci].q[r];jpOpen={ci,r,key:ci+"-"+r,val:jpVal(b,r),dd:!!x.dd,team:null,bet:null,marks:{}};
   $("jpClueCat").textContent=b.cats[ci].name||"Category "+(ci+1);$("jpClueVal").textContent=jpVal(b,r);
-  $("jpClueQ").textContent=x.q;const img=$("jpClueImg");img.hidden=!x.img;if(x.img)img.src=x.img;else img.removeAttribute("src");
+  $("jpClueQ").textContent=x.q;jpMShow($("jpClueQM"),x.qm,false);jpMShow($("jpClueAM"),null,false);
   $("jpClueA").textContent=x.a;$("jpClueA").hidden=true;$("jpReveal").hidden=false;$("jpAward").hidden=true;
   $("jpDD").hidden=!x.dd;$("jpQA").hidden=!!x.dd;
   if(x.dd){const box=$("jpDDTeams");box.innerHTML="";jpGame.teams.forEach((t,i)=>{const bt=document.createElement("button");bt.type="button";bt.textContent=t.name;bt.setAttribute("aria-pressed","false");
@@ -5767,7 +5865,9 @@ $("jpDDGo").onclick=()=>{if(jpOpen.team==null){toast("Pick the team first");retu
   const bet=Math.max(0,Math.min(max,parseInt($("jpDDBet").value,10)||0));jpOpen.bet=bet;$("jpClueVal").textContent="Bet "+bet;$("jpDD").hidden=true;$("jpQA").hidden=false;jpTimerStart();$("jpReveal").focus()};
 function jpTimerStart(){clearInterval(jpTick);const el=$("jpTimer");if(!jpCfg.time){el.hidden=true;return}let left=jpCfg.time;el.hidden=false;el.classList.remove("low");el.textContent=left+" s";
   jpTick=setInterval(()=>{left--;el.textContent=Math.max(0,left)+" s";el.classList.toggle("low",left<=5);if(left<=0){clearInterval(jpTick);beep(440,.4);el.textContent="Time's up"}},1000)}
-function jpReveal(){if($("jpQA").hidden||!$("jpClueA").hidden)return;clearInterval(jpTick);$("jpClueA").hidden=false;$("jpReveal").hidden=true;
+function jpReveal(){if($("jpQA").hidden||!$("jpClueA").hidden)return;clearInterval(jpTick);$("jpClueA").hidden=false;
+  {const x=jpCur.cats[jpOpen.ci].q[jpOpen.r];if(x.am){const qv=$("jpClueQM").querySelector("video");if(qv)qv.pause();jpMShow($("jpClueAM"),x.am,false)}}
+  try{$("jpClueA").scrollIntoView({block:"start",behavior:"smooth"})}catch(e){}$("jpReveal").hidden=true;
   const box=$("jpAwardBtns");box.innerHTML="";const teams=jpOpen.dd?[jpOpen.team]:jpGame.teams.map((_,i)=>i);const v=jpOpen.dd?jpOpen.bet:jpOpen.val;
   teams.forEach(i=>{const g=document.createElement("div");g.className="grp";g.innerHTML='<span></span><button class="ok" type="button">✓ +'+v+'</button>'+(jpCfg.minus||jpOpen.dd?'<button class="no" type="button">✗ −'+v+'</button>':"");
     g.querySelector("span").textContent=jpGame.teams[i].name;
@@ -5775,7 +5875,7 @@ function jpReveal(){if($("jpQA").hidden||!$("jpClueA").hidden)return;clearInterv
     g.querySelector(".ok").onclick=()=>mark(v);const no=g.querySelector(".no");if(no)no.onclick=()=>mark(-v);box.appendChild(g)});
   $("jpAward").hidden=false;$("jpClueClose").focus()}
 $("jpReveal").onclick=jpReveal;
-function jpClueClose(){clearInterval(jpTick);if(!jpOpen)return;
+function jpClueClose(){clearInterval(jpTick);if(!jpOpen)return;$("jpClueQM").innerHTML="";$("jpClueAM").innerHTML="";
   if(!$("jpClueA").hidden){if(!jpGame.used.includes(jpOpen.key))jpGame.used.push(jpOpen.key);if(!Object.values(jpOpen.marks).some(Boolean))jpGame.log.push({i:0,delta:0,why:"none",key:jpOpen.key});jpSaveGame()}
   jpOpen=null;$("jpClue").hidden=true;jpBoardUI();
   const left=document.querySelectorAll("#jpBoard .jpcell:not(.used)").length;
