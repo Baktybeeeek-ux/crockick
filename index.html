@@ -1115,7 +1115,13 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
 .jpsel{width:auto;min-width:180px;min-height:40px;padding:6px 10px}
 .jpsaved-tag{font-size:var(--fs-xs);font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .jpgridwrap{overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
-.jpgrid{display:grid;grid-template-columns:repeat(var(--c,5),minmax(120px,1fr));gap:8px;min-width:min-content}
+.jpgrid{display:grid;grid-template-columns:repeat(var(--c,5),minmax(var(--cw,120px),1fr));gap:8px;min-width:min-content}
+.jpgrid.wide{--cw:96px;gap:6px}
+.jpgridwrap.bleed{width:calc(100vw - 32px);margin-left:calc(50% - 50vw + 16px)}
+.jpgridwrap.bleed .jpgrid{--cw:74px}
+body[data-view="jeopardy"]{overflow-x:clip}
+.jpgrid.wide .jpcell{font-size:1.4rem}
+.jpgrid.wide .jpcat{font-size:.85rem}
 .jpcat{display:flex;align-items:center;justify-content:center;text-align:center;min-height:64px;padding:8px;border-radius:14px;background:#17577F;color:#fff;font-weight:800;font-size:1rem;line-height:1.2;overflow-wrap:anywhere}
 .jpedgrid .jpcat{padding:4px}
 .jpcat input{width:100%;border:0;background:transparent;color:#fff;font:inherit;text-align:center;padding:8px 4px;border-radius:10px}
@@ -1189,6 +1195,8 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
 .jpq{margin:0;font-size:clamp(1.6rem,4.4vw,3.4rem);font-weight:800;line-height:1.2;max-width:24ch;overflow-wrap:anywhere}
 .jpimg{max-width:min(100%,640px);max-height:42vh;border-radius:16px;object-fit:contain;background:#fff}
 .jpa{margin:0;padding:var(--s3) var(--s6);border-radius:18px;background:#FFD166;color:#202923;font-size:clamp(1.3rem,3.4vw,2.4rem);font-weight:800;overflow-wrap:anywhere;animation:wpop .3s cubic-bezier(.2,1.4,.4,1)}
+.jpa.noans{background:rgba(255,255,255,.14);color:#D6E6F2;font-size:clamp(1rem,2.2vw,1.4rem)}
+.jpa.noans:empty{display:none}
 .jpreveal{background:#fff;color:#123F5E;--b:#fff;--t:#123F5E}
 .jpclue kbd{font-family:var(--font);font-size:.7em;padding:2px 6px;border-radius:6px;background:rgba(0,0,0,.1);margin-left:6px}
 .jpclose{background:transparent;color:#D6E6F2;border:2px solid rgba(255,255,255,.3);--b:transparent;--t:#D6E6F2}
@@ -1711,11 +1719,11 @@ body:not([data-view="jeopardy"]) .v-jp{display:none!important}
     <div class="jpbar">
       <h1 class="jph">My Jeopardy games</h1>
       <div class="jpbarbtns">
-        <button class="btn btn-sm" type="button" id="jpImportBtn">Import file</button>
+        <button class="btn btn-sm" type="button" id="jpImportBtn">Import file (Crockick or JeopardyLabs)</button>
         <button class="btn btn-success" type="button" id="jpNew">+ New game</button>
       </div>
     </div>
-    <input type="file" id="jpFile" accept=".json,application/json" hidden>
+    <input type="file" id="jpFile" accept=".json,.html,.htm,application/json,text/html" hidden>
     <div class="jpsaved" id="jpList"></div>
     <p class="jpnote" id="jpLibNote">Games are saved on this device. Use Share link or Download to move a game to another device.</p>
   </section>
@@ -5578,7 +5586,8 @@ $("mToSetup").onclick=()=>{mRes=null;closeModal("summary");mShow("mSetup")};
 mobSync();
 
 /* ================= Jeopardy ================= */
-const JP_MAXC=6, JP_MAXR=6, JP_LV=["bz","ba","bb","im","im","im"];
+const JP_MAXC=12, JP_MAXR=10, JP_LV=["bz","ba","bb","im","im","im","im","im","im","im"];
+const jpReady=x=>!!(x.q.trim()||x.qm); /* a box needs a question; the answer is optional (tasks and challenges) */
 const JP_FILL={word:"Words: what's the word?",idi:"Idioms",phr:"Phrasal verbs",sl:"Slang",syn:"Synonyms",ant:"Opposites",chr:"Characters",plc:"Places",job:"Jobs"};
 const jpUid=()=>"j"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function jpLoad(){try{const v=JSON.parse(localStorage.getItem("jp-boards")||"null");return Array.isArray(v)?v:null}catch(e){return null}}
@@ -5593,7 +5602,7 @@ function jpSaveGame(){try{localStorage.setItem("jp-game",JSON.stringify(jpGame))
 function jpSaveCfg(){try{localStorage.setItem("jp-cfg",JSON.stringify(jpCfg))}catch(e){}}
 function jpBlank(cols,rows){return {id:jpUid(),title:"Untitled game",v0:100,vs:100,rows,cats:Array.from({length:cols},(_,i)=>({name:"",q:Array.from({length:rows},()=>({q:"",a:"",qm:null,am:null,dd:false}))})),final:{on:false,cat:"",q:"",a:""},updated:Date.now()}}
 function jpVal(b,r){return b.v0+b.vs*r}
-function jpFilled(b){let n=0,t=0;b.cats.forEach(c=>c.q.forEach(x=>{t++;if(x.q.trim()&&x.a.trim())n++}));return [n,t]}
+function jpFilled(b){let n=0,t=0;b.cats.forEach(c=>c.q.forEach(x=>{t++;if(jpReady(x))n++}));return [n,t]}
 /* pictures, videos and links shown with a question or an answer: {t:"image"|"video"|"link", u:"…"} */
 const JP_IMG_DATA=/^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 function jpMClean(m,legacy){
@@ -5626,7 +5635,7 @@ function jpPick(kind,r,used){
 function jpFillCat(b,ci,kind,onlyEmpty){
   const c=b.cats[ci],used=new Set();b.cats.forEach(cc=>cc.q.forEach(x=>{if(x.a)used.add(x.a.toLowerCase())}));
   if(!onlyEmpty||!c.name.trim())c.name=kind==="word"?"Words":JP_FILL[kind];
-  c.q.forEach((x,r)=>{if(onlyEmpty&&(x.q.trim()||x.a.trim()))return;const n=jpPick(kind,r,used);if(n){n.dd=x.dd;c.q[r]=n}});
+  c.q.forEach((x,r)=>{if(onlyEmpty&&(x.q.trim()||x.a.trim()||x.qm||x.am))return;const n=jpPick(kind,r,used);if(n){n.dd=x.dd;c.q[r]=n}});
 }
 function jpSample(){
   const b=jpBlank(5,5);b.title="English mix";
@@ -5656,7 +5665,7 @@ function jpLibUI(){
     d.querySelector("h3").textContent=b.title||"Untitled game";
     d.querySelector(".meta").textContent=b.cats.length+" categories × "+b.rows+" questions · "+n+" of "+t+" ready"+(b.final.on?" · Final Jeopardy":"")+(jpGame&&jpGame.board===b.id?" · game in progress":"");
     const g=d.querySelector(".jpminigrid");g.style.setProperty("--c",b.cats.length);
-    for(let r=0;r<b.rows;r++)b.cats.forEach(c=>{const i=document.createElement("i");const x=c.q[r];if(!(x.q.trim()&&x.a.trim()))i.className="e";g.appendChild(i)});
+    for(let r=0;r<b.rows;r++)b.cats.forEach(c=>{const i=document.createElement("i");const x=c.q[r];if(!jpReady(x))i.className="e";g.appendChild(i)});
     d.querySelector(".play").onclick=()=>{jpCur=b;jpSetupUI()};
     d.querySelector(".edit").onclick=()=>{jpCur=b;jpEditUI()};
     d.querySelector(".share").onclick=()=>jpShareOpen(b);
@@ -5669,7 +5678,46 @@ function jpLibUI(){
 $("jpNew").onclick=()=>{const b=jpBlank(5,5);jpBoards.push(b);jpPersist();jpCur=b;jpEditUI();setTimeout(()=>{$("jpTitle").focus();$("jpTitle").select()},0)};
 $("jpImportBtn").onclick=()=>$("jpFile").click();
 $("jpFile").onchange=async()=>{const f=$("jpFile").files[0];$("jpFile").value="";if(!f)return;
-  try{const b=jpClean(JSON.parse(await f.text()));if(!b)throw 0;jpBoards.push(b);jpPersist();jpLibUI();toast("Imported “"+b.title+"”","ok")}catch(e){toast("That file isn't a Jeopardy game")}};
+  let txt="";try{txt=await f.text()}catch(e){toast("That file couldn't be read");return}
+  let b=null;try{b=/^\s*[\[{]/.test(txt)?jpClean(JSON.parse(txt)):jpFromJeopardyLabs(txt)}catch(e){b=null}
+  if(!b){toast("That file isn't a Jeopardy game. For JeopardyLabs, open the game and save the page (Ctrl+S) as a web page file.");return}
+  jpBoards.push(b);jpPersist();jpLibUI();
+  const [n,t]=jpFilled(b);toast("Imported “"+b.title+"”: "+b.cats.length+" categories, "+n+" questions","ok")}
+/* reads a game saved from JeopardyLabs (the play page saved as .html). The file is only read, never run. */
+function jpFromJeopardyLabs(html){
+  const doc=new DOMParser().parseFromString(html,"text/html");
+  const base=(doc.querySelector("base[href]")&&doc.querySelector("base[href]").getAttribute("href"))||"https://jeopardylabs.com";
+  const abs=u=>{try{return new URL(u,base).href}catch(e){return ""}};
+  const cats=[...doc.querySelectorAll(".grid-row-cats .cat-cell")];
+  const rowsEl=[...doc.querySelectorAll(".grid-row-questions")];
+  if(!cats.length||!rowsEl.length)return null;
+  const textOf=el=>{if(!el)return "";const parts=[];const walk=n=>{n.childNodes.forEach(c=>{if(c.nodeType===3)parts.push(c.textContent);else if(c.nodeType===1){const t=c.tagName;if(t==="BR")parts.push("\n");else if(t==="SCRIPT"||t==="STYLE")return;else{if(t==="P"||t==="DIV"||t==="LI")parts.push("\n");walk(c)}}})};walk(el);
+    return parts.join("").replace(/ /g," ").split("\n").map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean).join("\n")};
+  const mediaOf=el=>{if(!el)return null;
+    const fr=el.querySelector("iframe[src]");if(fr)return jpMClean({t:"video",u:abs(fr.getAttribute("src"))});
+    const v=el.querySelector("video[src],video source[src]");if(v)return jpMClean({t:"video",u:abs(v.getAttribute("src"))});
+    const im=el.querySelector("img[src]");if(im)return jpMClean({t:"image",u:abs(im.getAttribute("src"))});
+    const a=[...el.querySelectorAll("a[href]")].map(x=>abs(x.getAttribute("href"))).find(u=>/^https?:/i.test(u));if(a){const vid=jpVideoEmbed(a);return jpMClean({t:vid?"video":"link",u:a})}
+    return null};
+  const C=Math.min(JP_MAXC,cats.length),R=Math.min(JP_MAXR,rowsEl.length);
+  const b={title:(doc.title||"").replace(/\s*Jeopardy Template\s*$/i,"").replace(/^#\s*/,"").trim()||"JeopardyLabs game",rows:R,v0:100,vs:100,
+    cats:cats.slice(0,C).map(c=>({name:textOf(c).replace(/\n/g," "),q:[]})),final:{on:false}};
+  const vals=[];
+  rowsEl.slice(0,R).forEach((row,r)=>{
+    const cells=[...row.querySelectorAll(":scope > .grid-cell")];
+    for(let ci=0;ci<C;ci++){
+      const cell=cells.find(x=>+x.getAttribute("data-col")===ci)||cells[ci];
+      let q="",a="",qm=null,am=null;
+      if(cell&&!cell.classList.contains("empty")){
+        const fr=cell.querySelector(".front"),bk=cell.querySelector(".back");q=textOf(fr);a=textOf(bk);qm=mediaOf(fr);am=mediaOf(bk);
+        const v=parseInt((cell.querySelector(".cell-inner")||{}).textContent,10);if(v>0&&vals[r]==null)vals[r]=v}
+      b.cats[ci].q[r]={q,a,qm,am,dd:false}}
+  });
+  if(vals[0]>0){b.v0=vals[0];b.vs=vals[1]>vals[0]?vals[1]-vals[0]:(vals[0]||100)}
+  const out=jpClean(b);if(!out)return null;
+  out.cats.forEach((c,ci)=>c.q.forEach((x,r)=>{x.qm=b.cats[ci].q[r].qm;x.am=b.cats[ci].q[r].am}));
+  return out;
+};
 /* ---- editor ---- */
 function jpTouch(){jpCur.updated=Date.now();$("jpSavedTag").textContent="Saving…";clearTimeout(jpSaveT);jpSaveT=setTimeout(()=>{jpPersist();$("jpSavedTag").textContent="Saved"},400)}
 function jpEditUI(){
@@ -5683,12 +5731,12 @@ function jpEditUI(){
   jpEdGrid();
 }
 function jpEdGrid(){
-  const b=jpCur,g=$("jpEdGrid");g.innerHTML="";g.style.setProperty("--c",b.cats.length);
+  const b=jpCur,g=$("jpEdGrid");g.innerHTML="";g.style.setProperty("--c",b.cats.length);g.classList.toggle("wide",b.cats.length>6);g.parentElement.classList.toggle("bleed",b.cats.length>6);
   b.cats.forEach((c,ci)=>{const h=document.createElement("div");h.className="jpcat";const inp=document.createElement("input");inp.maxLength=40;inp.placeholder="Category "+(ci+1);inp.value=c.name;inp.setAttribute("aria-label","Category "+(ci+1)+" name");
     inp.oninput=()=>{c.name=inp.value;jpTouch()};h.appendChild(inp);g.appendChild(h)});
-  for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],btn=document.createElement("button");btn.type="button";const ok=x.q.trim()&&x.a.trim();btn.className="jpcell"+(ok?"":" empty");
+  for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],btn=document.createElement("button");btn.type="button";const ok=jpReady(x);btn.className="jpcell"+(ok?"":" empty");
     const mk=[x.qm,x.am].filter(Boolean).map(m=>({image:"PIC",video:"VIDEO",link:"LINK"})[m.t]);
-    btn.innerHTML="<span></span><small></small>"+(x.dd?'<em class="ddmark">DD</em>':"")+(mk.length?'<em class="mmark">'+[...new Set(mk)].join(" · ")+'</em>':"");btn.firstChild.textContent=jpVal(b,r);btn.querySelector("small").textContent=ok?x.q:"Tap to write";
+    btn.innerHTML="<span></span><small></small>"+(x.dd?'<em class="ddmark">DD</em>':"")+(mk.length?'<em class="mmark">'+[...new Set(mk)].join(" · ")+'</em>':"");btn.firstChild.textContent=jpVal(b,r);btn.querySelector("small").textContent=ok?(x.q||"(picture)"):"Tap to write";
     btn.setAttribute("aria-label",(c.name||"Category "+(ci+1))+", "+jpVal(b,r)+" points"+(ok?"":" (empty)"));
     btn.onclick=()=>jpCellOpen(ci,r);g.appendChild(btn)});
 }
@@ -5717,7 +5765,7 @@ function jpFillChips(){
   mk("all");JP_KINDS.forEach(k=>mk(k,JP_FILL[k].replace("Words: what's the word?","Words")));
 }
 function jpFillNames(){return jpCfg.fill.length===JP_KINDS.length?"all decks":jpCfg.fill.map(k=>k==="word"?"Words":JP_FILL[k]).join(", ")}
-$("jpFillEmpty").onclick=()=>{const ks=jpCfg.fill;let n=0;jpCur.cats.forEach((c,ci)=>{if(c.q.some(x=>!x.q.trim()||!x.a.trim())){jpFillCat(jpCur,ci,ks[ci%ks.length],true);n++}});
+$("jpFillEmpty").onclick=()=>{const ks=jpCfg.fill;let n=0;jpCur.cats.forEach((c,ci)=>{if(c.q.some(x=>!jpReady(x))){jpFillCat(jpCur,ci,ks[ci%ks.length],true);n++}});
   jpTouch();jpEditUI();toast(n?"Empty boxes filled from "+jpFillNames():"No empty boxes to fill",n?"ok":"")};
 $("jpFillAll").onclick=e=>{const b=e.currentTarget;if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to replace everything";setTimeout(()=>{b.dataset.armed="";b.textContent="Replace whole board"},2500);return}
   b.dataset.armed="";b.textContent="Replace whole board";
@@ -5829,9 +5877,9 @@ $("jpResume").onclick=jpBoardUI;
 function jpBoardUI(){
   if(!jpGame||!jpCur){jpLibUI();return}
   jpShow("jpPlay");const b=jpCur;$("jpPlayTitle").textContent=b.title;
-  const g=$("jpBoard");g.innerHTML="";g.style.setProperty("--c",b.cats.length);
+  const g=$("jpBoard");g.innerHTML="";g.style.setProperty("--c",b.cats.length);g.classList.toggle("wide",b.cats.length>6);g.parentElement.classList.toggle("bleed",b.cats.length>6);
   b.cats.forEach((c,ci)=>{const h=document.createElement("div");h.className="jpcat";h.textContent=c.name||"Category "+(ci+1);g.appendChild(h)});
-  for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],key=ci+"-"+r,used=jpGame.used.includes(key)||!(x.q.trim()&&x.a.trim());
+  for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],key=ci+"-"+r,used=jpGame.used.includes(key)||!jpReady(x);
     const btn=document.createElement("button");btn.type="button";btn.className="jpcell"+(used?" used":"");btn.textContent=jpVal(b,r);btn.disabled=used;
     btn.setAttribute("aria-label",(c.name||"Category "+(ci+1))+" for "+jpVal(b,r)+(used?", done":""));btn.onclick=()=>jpClueOpen(ci,r);g.appendChild(btn)});
   jpScoreUI();
@@ -5854,7 +5902,7 @@ function jpClueOpen(ci,r){
   const b=jpCur,x=b.cats[ci].q[r];jpOpen={ci,r,key:ci+"-"+r,val:jpVal(b,r),dd:!!x.dd,team:null,bet:null,marks:{}};
   $("jpClueCat").textContent=b.cats[ci].name||"Category "+(ci+1);$("jpClueVal").textContent=jpVal(b,r);
   $("jpClueQ").textContent=x.q;jpMShow($("jpClueQM"),x.qm,false);jpMShow($("jpClueAM"),null,false);
-  $("jpClueA").textContent=x.a;$("jpClueA").hidden=true;$("jpReveal").hidden=false;$("jpAward").hidden=true;
+  $("jpClueA").textContent=x.a||(x.am?"":"No answer: this one is a task");$("jpClueA").classList.toggle("noans",!x.a);$("jpClueA").hidden=true;$("jpReveal").hidden=false;$("jpAward").hidden=true;
   $("jpDD").hidden=!x.dd;$("jpQA").hidden=!!x.dd;
   if(x.dd){const box=$("jpDDTeams");box.innerHTML="";jpGame.teams.forEach((t,i)=>{const bt=document.createElement("button");bt.type="button";bt.textContent=t.name;bt.setAttribute("aria-pressed","false");
       bt.onclick=()=>{jpOpen.team=i;box.querySelectorAll("button").forEach((z,j)=>z.setAttribute("aria-pressed",j===i));$("jpDDBet").max=Math.max(jpGame.teams[i].score,b.v0+b.vs*(b.rows-1));$("jpDDBet").focus()};box.appendChild(bt)});
