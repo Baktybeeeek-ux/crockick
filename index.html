@@ -697,6 +697,8 @@ a.game:active{transform:translateY(1px);box-shadow:0 2px 0 var(--line)}
 .spylib{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s4)}
 .spytiles .stile[disabled]{opacity:.45}
 .spyquit{align-self:center}
+.spyfoot{display:flex;gap:var(--s2);justify-content:center;flex-wrap:wrap}
+.spyfoot .spyquit{align-self:auto}
 .spyprog{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
 .spyprog i{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .spyprog i.done{background:var(--secondary)}
@@ -1529,7 +1531,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
         <button class="btn btn-lg" type="button" id="spyHide">Hide and pass on</button>
       </div>
     </div>
-    <button class="btn btn-sm spyquit" type="button" data-spy-quit>End game</button>
+    <div class="spyfoot"><button class="btn btn-sm" type="button" data-spy-join>+ Add player</button><button class="btn btn-sm spyquit" type="button" data-spy-quit>End game</button></div>
   </section>
 
   <!-- talk -->
@@ -1542,7 +1544,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <div class="spyalive" id="spyAlive"></div>
       <button class="btn btn-lg btn-go" type="button" id="spyToVote">Time to vote</button>
     </div>
-    <button class="btn btn-sm spyquit" type="button" data-spy-quit>End game</button>
+    <div class="spyfoot"><button class="btn btn-sm" type="button" data-spy-join>+ Add player</button><button class="btn btn-sm spyquit" type="button" data-spy-quit>End game</button></div>
   </section>
 
   <!-- vote -->
@@ -1581,6 +1583,17 @@ body[data-view="jeopardy"]{overflow-x:clip}
     </div>
   </section>
 </main>
+</div>
+
+<div class="modal" id="spyJoin" hidden role="dialog" aria-modal="true" aria-labelledby="spyJoinH">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="spyJoinH">Add a player</h2><button class="iconbtn" type="button" data-close aria-label="Close">×</button></div>
+    <div class="sheet-b jpcellb">
+      <p class="spyhint" id="spyJoinNote"></p>
+      <div class="spyadd"><input class="input" id="spyJoinName" maxlength="20" placeholder="Player name" autocomplete="off" aria-label="New player name"><button class="btn btn-success" type="button" id="spyJoinBtn">Add</button></div>
+      <p class="err" id="spyJoinErr" hidden></p>
+    </div>
+  </div>
 </div>
 
 <!-- ================= WHEEL OF FORTUNE ================= -->
@@ -4787,7 +4800,7 @@ function renderHistory(){
 let lastFocus=null;
 function openModal(id){lastFocus=document.activeElement;$(id).hidden=false;const f=$(id).querySelector("input,button:not([data-close]),button");f&&f.focus()}
 function closeModal(id){$(id).hidden=true;lastFocus&&lastFocus.focus&&lastFocus.focus()}
-function openModalId(){return ["cardForm","cardsModal","settings","summary","confirm","scoreModal"].find(id=>!$(id).hidden)}
+function openModalId(){return ["cardForm","cardsModal","settings","summary","confirm","scoreModal","spyJoin"].find(id=>!$(id).hidden)}
 document.querySelectorAll(".modal").forEach(m=>{
   m.addEventListener("click",e=>{if(e.target===m||e.target.closest("[data-close]")){if(m.id==="cardForm")closeCardForm();else closeModal(m.id)}});
 });
@@ -5286,7 +5299,28 @@ $("spyShow").onclick=()=>{
   else{$("spyRevealLabel").textContent="Your card · "+(sg.cat==="sl"?"Slang":CATS[sg.cat].name);$("spyTerm").textContent=isSpy?sg.pair[1]:sg.pair[0];$("spySub").textContent="Remember it, then hide it. Don't show anyone!"}
   $("spyPass").hidden=true;$("spyReveal").hidden=false;$("spyHide").focus();
 };
-$("spyHide").onclick=()=>{sg.turn++;if(sg.turn<sg.names.length){spyDealUI();$("spyShow").focus()}else spyTalk()};
+$("spyHide").onclick=()=>{if(sg.lateQ&&sg.lateQ.length){sg.lateQ.shift();if(sg.lateQ.length){sg.turn=sg.lateQ[0];spyDealUI();$("spyProg").innerHTML="";$("spyShow").focus();return}sg.turn=sg.names.length;sg.paused=sg.wasPaused;spyTalkList();spyShow("spyTalk");return}sg.turn++;if(sg.turn<sg.names.length){spyDealUI();$("spyShow").focus()}else spyTalk()};
+/* ---- add a player during the game ---- */
+function spyJoinOpen(){if(!sg)return;if(sg.names.length>=20){toast("Spy has 20 players at most");return}
+  $("spyJoinNote").textContent="The new player gets the players' card, so they are never the spy."+(spyScreen==="spyTalk"?" They see their card right away, then you keep talking.":" They get their card after the others.");
+  $("spyJoinErr").hidden=true;$("spyJoinName").value="";openModal("spyJoin");setTimeout(()=>$("spyJoinName").focus(),30)}
+function spyJoinAdd(){if(!sg)return;
+  const v=$("spyJoinName").value.trim().slice(0,20)||("Player "+(sg.names.length+1));
+  const err=t=>{$("spyJoinErr").textContent=t;$("spyJoinErr").hidden=false;$("spyJoinName").focus()};
+  if(sg.names.length>=20)return err("Spy has 20 players at most.");
+  if(sg.names.some(n=>n.toLowerCase()===v.toLowerCase()))return err("That name is already in the game.");
+  sg.names.push(v);sg.alive.push(true);
+  if(!spy.players.some(p=>p.toLowerCase()===v.toLowerCase())&&spy.players.length<20){spy.players.push(v);spySave()}
+  closeModal("spyJoin");toast(v+" joined the game","ok");
+  const idx=sg.names.length-1;
+  if(spyScreen==="spyDeal"){if(sg.lateQ&&sg.lateQ.length)sg.lateQ.push(idx);else spyDealUI();return}
+  if(spyScreen==="spyTalk"){sg.lateQ=[idx];sg.wasPaused=!!sg.paused;sg.paused=true;sg.turn=idx;spyDealUI();
+    $("spyProg").innerHTML="";spyShow("spyDeal");$("spyShow").focus()}}
+document.querySelectorAll("[data-spy-join]").forEach(b=>b.onclick=spyJoinOpen);
+$("spyJoinBtn").onclick=spyJoinAdd;$("spyJoinName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();spyJoinAdd()}});
+function spyTalkList(){const alive=spyAliveIdx();$("spyRound").textContent="Round "+sg.round+" · "+alive.length+" players left";
+  $("spyAlive").innerHTML="";sg.names.forEach((n,i)=>{const s=document.createElement("span");s.textContent=n;if(!sg.alive[i])s.className="out";$("spyAlive").appendChild(s)})}
+
 function spyAliveIdx(){return sg.names.map((_,i)=>i).filter(i=>sg.alive[i])}
 function spyTalk(){
   const alive=spyAliveIdx();let pool=alive.filter(i=>!(sg.mode==="knows"&&sg.spies.has(i)));if(!pool.length)pool=alive;
