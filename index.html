@@ -930,6 +930,7 @@ body.focus .jpteam{padding:var(--s2)}
 body.focus .jpteam b{font-size:1.8rem}
 @media (max-width:640px){body.focus>header.band.v-croc .inner,body.focus #jpPlay .jpbar{padding-right:16px}body.focus>header.band.v-croc .inner{padding-top:54px}}
 
+
 /* ---------- game tickets (hub) ---------- */
 .games{display:flex!important;flex-direction:column;gap:var(--s4)}
 .ticket{--tc1:#48C077;--tc2:#2E9E5B;--tc3:#23804A;--tink:#1F7A45;--ttint:#E3F3E8;--aw:330px;position:relative;display:grid;grid-template-columns:var(--aw) minmax(0,1fr) auto;align-items:center;background:var(--surface);border-radius:28px;box-shadow:0 6px 0 var(--tc3);color:var(--text);text-decoration:none;transition:transform .15s var(--ease),box-shadow .15s var(--ease);min-height:200px}
@@ -978,6 +979,49 @@ a.ticket:hover .tplay{filter:brightness(1.06)}
   .tmeta span+span{margin-left:8px;padding-left:8px}
 }
 @media (prefers-reduced-motion:reduce){.wpopcard,.wpointer.tick{animation:none}}
+
+/* ---------- phones: safe top space, compact game list, bottom toolbar ---------- */
+.tabbar{display:none}
+@media (max-width:760px){
+  .band .inner{padding-top:calc(var(--s4) + env(safe-area-inset-top,0px))}
+  .games{gap:var(--s3)}
+  .ticket{--aw:84px;grid-template-columns:var(--aw) minmax(0,1fr) auto;border-radius:22px;box-shadow:0 5px 0 var(--tc3)}
+  .tart{grid-row:auto;border-radius:22px 0 0 22px;margin-bottom:-5px;box-shadow:inset 0 -5px 0 var(--tc3)}
+  .tsvg,.t-wheel .tsvg{width:58px;height:58px}
+  .tdesc,.tmeta{display:none}
+  .tbody{padding:var(--s4) var(--s3) var(--s4) var(--s4)}
+  .tname{font-size:1.45rem}
+  .tplay{grid-column:3;justify-self:end;margin:0 var(--s4) 0 0;padding:9px 16px;font-size:1.1rem;gap:8px;border-radius:14px;box-shadow:0 4px 0 var(--tc3)}
+  .tplay svg{width:15px;height:15px}
+  .tplay.tsoon{padding:7px 10px;font-size:.72rem;white-space:normal;text-align:center;max-width:78px;line-height:1.2}
+  .t-who .tname{white-space:nowrap}
+  .ticket::before,.ticket::after{width:18px;height:18px;left:calc(var(--aw) - 9px)}
+  .ticket::before{top:-9px}.ticket::after{bottom:-14px}
+  .hubmain{padding-bottom:var(--s6)}
+  .hubband .brand p.hubword{display:flex;font-size:2.8rem}
+  .hubtop .brand{flex-direction:column;align-items:center;text-align:center}
+}
+body.tb .tabbar{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:40;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;
+  padding:8px max(10px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 8px) max(10px,env(safe-area-inset-left,0px));background:var(--surface);border-top:1px solid var(--line);--mmut:var(--muted-strong)}
+body.tb{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
+body.tb .spytop>.backbtn,body.tb .spytop>.segnav,body.tb .hubtop>.segnav{display:none}
+body.tb .spytop{display:flex;justify-content:center;padding-block:var(--s3) var(--s5)}
+body.tb .hubtop{justify-content:center}
+body.tb .toasts{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+.tabbar .mnavb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border:0;border-radius:12px;background:transparent;color:var(--mmut);font:inherit;font-size:12px;font-weight:700;text-decoration:none;cursor:pointer;padding:0 2px;white-space:nowrap;overflow:hidden}
+.tabbar .mnavb span{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.tabbar .mnavb:active{background:var(--surface-2)}
+.tabbar .mnavb svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tabbar .mnavb[aria-current="page"]{color:var(--primary)}
+.tabbar .mnavb[aria-pressed="true"]:not(.themebtn){color:var(--primary);background:var(--surface-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tabbar .mnavb[aria-current="page"],:root:not([data-theme="light"]) .tabbar .mnavb[aria-pressed="true"]:not(.themebtn){color:var(--accent)}}
+:root[data-theme="dark"] .tabbar .mnavb[aria-current="page"],:root[data-theme="dark"] .tabbar .mnavb[aria-pressed="true"]:not(.themebtn){color:var(--accent)}
+body.focus .focusexit{top:calc(10px + env(safe-area-inset-top,0px))}
+body.focus .view>main,body.focus>main.v-croc{padding-top:calc(56px + env(safe-area-inset-top,0px))}
+
+body.focus .tabbar{display:none!important}
+body.tb.focus{padding-bottom:0}
+
 /* ---------- Crockick phone version ---------- */
 .v-mcroc{display:none}
 body.mob[data-view="crockick"] .v-croc{display:none!important}
@@ -1964,6 +2008,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
 </div>
 
 <button class="focusexit" type="button" id="focusExit" title="Exit focus mode (Esc or F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span>Exit focus</span></button>
+<nav class="tabbar" id="tabbar" aria-label="Menu"></nav>
 <footer class="foot" aria-labelledby="footH">
   <div class="inner">
     <div class="brand">
@@ -5172,9 +5217,32 @@ function showView(){
   if(v==="jeopardy"&&window.jpReady)jeopardyRender();
   if(window.mobReady)mobSync();
   if(typeof focusApply==="function")focusApply();
+  if(typeof tbBuild==="function")tbBuild();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",showView);
+
+/* ---------- phones: bottom toolbar made from each page's top menu ---------- */
+const TB_HEAD={hub:"#hubView",spy:"#spyView",wheel:"#wheelView",jeopardy:"#jpView"};
+const TB_NAMES={spyHowBtn:"Rules",wLayoutBtn:null,jpFull:"Full screen"};
+let tbObs=null;
+function tbLabel(src){if(src.classList.contains("themebtn"))return null;if(TB_NAMES[src.id])return TB_NAMES[src.id];const l=src.querySelector(".lbl");return (l&&l.textContent.trim())||src.getAttribute("aria-label")||""}
+function tbBuild(){
+  const v=document.body.dataset.view,on=document.body.classList.contains("mob")&&!!TB_HEAD[v];
+  document.body.classList.toggle("tb",on);const bar=$("tabbar");if(tbObs){tbObs.disconnect();tbObs=null}bar.innerHTML="";if(!on)return;
+  const g=document.createElement("a");g.className="mnavb";g.href="#";g.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Games</span>';
+  if(v==="hub")g.setAttribute("aria-current","page");g.onclick=e=>{e.preventDefault();if(location.hash&&location.hash!=="#"){try{history.pushState(null,"",location.pathname+location.search)}catch(x){location.hash=""}showView()}window.scrollTo(0,0)};bar.appendChild(g);
+  const pairs=[];
+  document.querySelectorAll(TB_HEAD[v]+" .band .segnav > button").forEach(src=>{
+    const b=document.createElement("button");b.type="button";b.className="mnavb"+(src.classList.contains("themebtn")?" themebtn":"");
+    const sp=document.createElement("span");if(src.classList.contains("themebtn"))sp.className="themelbl";b.appendChild(sp);
+    b.onclick=()=>src.click();b._src=src;bar.appendChild(b);pairs.push([src,b,sp])});
+  const sync=()=>pairs.forEach(([src,b,sp])=>{b.querySelectorAll("svg").forEach(s=>s.remove());
+    [...src.querySelectorAll("svg")].filter(s=>src.classList.contains("themebtn")||getComputedStyle(s).display!=="none").forEach(s=>b.insertBefore(s.cloneNode(true),sp));const p=src.getAttribute("aria-pressed");if(p!=null)b.setAttribute("aria-pressed",p);else b.removeAttribute("aria-pressed");
+    b.setAttribute("aria-label",src.getAttribute("aria-label")||tbLabel(src)||"");
+    sp.textContent=src.classList.contains("themebtn")?(p==="true"?"Light mode":"Dark mode"):(src.id==="wLayoutBtn"?(p==="true"?"Entries":"Big wheel"):tbLabel(src))});
+  sync();tbObs=new MutationObserver(sync);pairs.forEach(([src])=>tbObs.observe(src,{attributes:true,attributeFilter:["aria-pressed","aria-label"],subtree:true,characterData:true,childList:true}));
+}
 /* ---------- focus mode ---------- */
 let focusOn=store.get("croc-focus")==="1";
 function focusApply(){const v=document.body.dataset.view;const on=focusOn&&v&&v!=="hub"&&!(document.body.classList.contains("mob")&&v==="crockick");
@@ -5561,7 +5629,7 @@ function wheelRender(){if(!wBuilt)wBuild();else{wPanel();wLayoutUI();requestAnim
 /* Phones (touch screen, narrow) and the installed app get the swipe version; computers keep the web version. */
 const MOB_Q=window.matchMedia?matchMedia("(max-width: 760px) and (pointer: coarse)"):null;
 function mobWanted(){const q=new URLSearchParams(location.search).get("ui");if(q==="mobile")return true;if(q==="web")return false;return !!(MOB_Q&&MOB_Q.matches)}
-function mobSync(){document.body.classList.toggle("mob",mobWanted());if(mobOn())mRender()}
+function mobSync(){document.body.classList.toggle("mob",mobWanted());if(mobOn())mRender();if(typeof tbBuild==="function"){tbBuild();focusApply()}}
 if(MOB_Q&&MOB_Q.addEventListener)MOB_Q.addEventListener("change",mobSync);
 function mobOn(){return document.body.classList.contains("mob")&&document.body.dataset.view==="crockick"}
 let mScreen="mSetup", mRes=null, mFlying=false;
