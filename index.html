@@ -1022,6 +1022,50 @@ body.focus .view>main,body.focus>main.v-croc{padding-top:calc(56px + env(safe-ar
 body.focus .tabbar{display:none!important}
 body.tb.focus{padding-bottom:0}
 
+
+/* ---------- Who Am I? ---------- */
+body:not([data-view="who"]) .v-who{display:none!important}
+.whoword span:nth-child(1){color:var(--accent)}
+.whoword span.sp{width:.32em}
+.spyrow3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4)}
+.spyrow3>div:first-child{grid-column:1/-1}
+.spyrow3 .seg{grid-template-columns:repeat(var(--n,4),1fr)}
+.spyrow3 .group-h{margin-bottom:var(--s2)}
+body.mob.whoplay[data-view="who"] .v-who>.band,body.mob.whoplay[data-view="who"] .tabbar{display:none}
+body.mob.whoplay[data-view="who"]{padding-bottom:0}
+body.mob.whoplay[data-view="who"] .whomain{padding-top:calc(var(--s4) + env(safe-area-inset-top,0px))}
+@media (max-width:760px){.whocard{min-height:min(36vh,300px)}.whoans .btn{min-height:60px}}
+.whowarn{max-width:34ch;line-height:1.45;background:color-mix(in srgb,var(--accent) 22%,var(--surface));color:var(--text)!important;border-radius:14px;padding:10px 14px}
+.whoideas{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:var(--s4);width:100%}
+.whoideas small{font-size:var(--fs-xs);font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.whoideas div{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.whoideas span{padding:6px 12px;border-radius:999px;background:var(--surface-2);font-weight:700;font-size:var(--fs-sm);color:var(--muted-strong)}
+.whobar{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
+.whoname{font-weight:800;font-size:1.15rem}
+.whotimer span{font-size:2rem}
+.whotimer.off{visibility:hidden}
+.whocard{min-height:min(40vh,340px);border-color:#C9772E;box-shadow:0 6px 0 #A9611F}
+.whocard .spyterm{font-size:clamp(2.4rem,9vw,4.4rem)}
+.whocard.paused .spyreveal{filter:blur(14px);opacity:.4}
+.whometa{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);font-weight:700;color:var(--muted-strong)}
+.whometa b{padding:6px 12px;border-radius:999px;background:color-mix(in srgb,#EBB06B 30%,var(--surface));color:var(--text)}
+.whoans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s2)}
+.whoans .btn{width:100%}
+.whomain2 .btn-go{min-width:min(100%,260px)}
+.whokeys{text-align:center;margin:0}
+body.mob .whokeys{display:none}
+.whores{display:flex;flex-direction:column;align-items:center;gap:var(--s3);text-align:center}
+.whores h2{font-size:clamp(1.8rem,6vw,2.6rem)}
+.whores.ok h2{color:var(--secondary)}
+.whoans2{margin:0;font-weight:600;font-size:1.1rem}
+.whoans2 b{font-size:1.3rem}
+.whoscores li.now{box-shadow:0 0 0 2px var(--accent) inset}
+.whofinal{grid-template-columns:minmax(0,1fr);max-width:420px;width:100%;margin-inline:auto}
+.whofinal li{font-size:1.05rem}
+.whofinal li em{font-style:normal;color:var(--muted);margin-right:8px}
+.ticket.t-who{opacity:1}
+body.focus .whokeys{display:none}
+
 /* ---------- Crockick phone version ---------- */
 .v-mcroc{display:none}
 body.mob[data-view="crockick"] .v-croc{display:none!important}
@@ -1487,11 +1531,11 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <span class="tbody"><b class="tname">Jeopardy</b><span class="tdesc">Make your own question boards, then teams pick a category and points. Save, share and print your games.</span><span class="tmeta"><span>1–10 teams</span><span>Saved on this device</span></span></span>
       <span class="tplay">Play<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 6.9v10.2a1.1 1.1 0 0 0 1.7.93l8.1-5.1a1.1 1.1 0 0 0 0-1.86l-8.1-5.1a1.1 1.1 0 0 0-1.7.93z"/></svg></span>
     </a>
-    <div class="ticket t-who" aria-disabled="true">
+    <a class="ticket t-who" href="#who">
       <span class="tart" aria-hidden="true"><svg class="tsvg" viewBox="0 0 100 100"><circle cx="50" cy="44" r="20" fill="#FBF9F1"/><path d="M22 88a28 24 0 0 1 56 0z" fill="#FBF9F1"/><rect x="38" y="26" width="24" height="18" rx="3" fill="#FFD166" transform="rotate(-6 50 35)"/><path d="M46.6 31.5a3.6 3.6 0 1 1 5.2 3.2c-1.1.6-1.7 1.3-1.7 2.5" fill="none" stroke="#202923" stroke-width="2.4" stroke-linecap="round"/><circle cx="50.1" cy="40.4" r="1.4" fill="#202923"/></svg></span>
-      <span class="tbody"><b class="tname">Who Am I?</b><span class="tdesc">You get a character you can't see. Ask yes/no questions to find out who you are.</span><span class="tmeta"><span>Guess your character</span><span>Whole class</span></span></span>
-      <span class="tplay tsoon">Coming soon</span>
-    </div>
+      <span class="tbody"><b class="tname">Who Am I?</b><span class="tdesc">You get a character you can't see. Ask yes/no questions to find out who you are.</span><span class="tmeta"><span>2–20 players</span><span>One screen</span></span></span>
+      <span class="tplay">Play<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 6.9v10.2a1.1 1.1 0 0 0 1.7.93l8.1-5.1a1.1 1.1 0 0 0 0-1.86l-8.1-5.1a1.1 1.1 0 0 0-1.7.93z"/></svg></span>
+    </a>
   </div>
 </main>
 </div>
@@ -1638,6 +1682,125 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <p class="err" id="spyJoinErr" hidden></p>
     </div>
   </div>
+</div>
+
+<!-- ================= WHO AM I? ================= -->
+<div class="view v-who" id="whoView">
+<header class="band spyband">
+  <div class="inner">
+    <div class="spytop">
+      <a class="navmain backbtn" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Games</span></a>
+      <div class="wtitle"><p class="spyword whoword" aria-label="Who Am I?"><span aria-hidden="true">W</span><span aria-hidden="true">h</span><span aria-hidden="true">o</span><span aria-hidden="true" class="sp">&nbsp;</span><span aria-hidden="true">A</span><span aria-hidden="true">m</span><span aria-hidden="true" class="sp">&nbsp;</span><span aria-hidden="true">I</span><span aria-hidden="true">?</span></p><p class="wtag">Ask, think, guess!</p></div>
+      <div class="segnav">
+        <button class="navbtn focusbtn" type="button" aria-pressed="false" aria-label="Focus mode: hide everything except the game" title="Focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span class="lbl">Focus</span></button>
+        <button class="navbtn" type="button" id="whoHowBtn" aria-label="How to play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7"/><path d="M12 17.2v.1"/></svg><span class="lbl">How to play</span></button>
+        <button class="navbtn themebtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="lbl themelbl">Dark mode</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="inner spymain whomain">
+
+  <!-- setup -->
+  <section class="spyscreen" id="whoSetup">
+    <div class="panel spyhow" id="whoHow" hidden>
+      <h2>How to play Who Am I?</h2>
+      <ol class="spysteps">
+        <li><b>Don't look!</b> The player whose turn it is turns their back to the screen, or holds the phone on their forehead.</li>
+        <li><b>Ask yes/no questions.</b> "Am I a person?" "Do I work outside?" The class answers Yes, No or Maybe. Tap the same answer on the screen.</li>
+        <li><b>Guess.</b> When the player says the right answer, tap <b>Guessed it!</b></li>
+        <li><b>Points.</b> Fewer questions, more points: 1–5 questions = 3 points, 6–10 = 2 points, more = 1 point.</li>
+      </ol>
+    </div>
+
+    <div class="panel spygroup">
+      <div class="group-h"><span class="group-l">Players <small id="whoCount"></small></span><small>2 to 20</small></div>
+      <div class="spyplayers" id="whoPlayers"></div>
+      <div class="spyadd"><input class="input" id="whoNewName" maxlength="20" placeholder="Player name" autocomplete="off" aria-label="New player name"><button class="btn btn-sm" type="button" id="whoAddBtn">+ Add</button></div>
+    </div>
+
+    <div class="panel spygroup">
+      <div class="group-h"><span class="group-l">Who can you be?</span><small>Pick one or more</small></div>
+      <div class="spytiles" id="whoCats"></div>
+      <div id="whoLvWrap"><div class="group-h" style="margin-top:var(--s4)"><span class="group-l">Level</span></div><div class="spypills" id="whoLv"></div></div>
+    </div>
+
+    <div class="panel spygroup">
+      <div class="spyrow3">
+        <div><div class="group-h"><span class="group-l" id="whoTL">Time per turn</span></div><div class="seg" id="whoT" role="group" aria-labelledby="whoTL"></div></div>
+        <div><div class="group-h"><span class="group-l" id="whoQL">Questions</span></div><div class="seg" id="whoQ" role="group" aria-labelledby="whoQL"></div></div>
+        <div><div class="group-h"><span class="group-l" id="whoRL">Rounds</span></div><div class="seg" id="whoR" role="group" aria-labelledby="whoRL"></div></div>
+      </div>
+      <p class="spyhint">In every round each player guesses one card.</p>
+    </div>
+
+    <button class="btn btn-lg btn-go spystart" type="button" id="whoStart"><span class="playic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.4 5.9v12.2a.9.9 0 0 0 1.4.8l9.4-6.1a.9.9 0 0 0 0-1.6L9.8 5.1a.9.9 0 0 0-1.4.8z"/></svg></span> Start the game</button>
+  </section>
+
+  <!-- whose turn -->
+  <section class="spyscreen" id="whoPass" hidden>
+    <div class="spycard whopass">
+      <div class="spypass">
+        <p class="spyrl" id="whoPassRound"></p>
+        <p>Next player</p>
+        <h2 id="whoPassName"></h2>
+        <p class="whowarn">Don't look at the screen! Turn around, or hold the phone on your forehead.</p>
+        <button class="btn btn-lg btn-go" type="button" id="whoGo">Show the card to the class</button>
+        <div class="whoideas" id="whoIdeas"></div>
+      </div>
+    </div>
+    <ol class="spyscores whoscores" id="whoMini"></ol>
+    <button class="btn btn-sm spyquit" type="button" data-who-quit>End game</button>
+  </section>
+
+  <!-- playing -->
+  <section class="spyscreen" id="whoPlay" hidden>
+    <div class="whobar">
+      <span class="whoname" id="whoPlayName"></span>
+      <span class="spytimer whotimer" id="whoTimer"><span id="whoClock">2:00</span></span>
+    </div>
+    <div class="spycard whocard" id="whoCard">
+      <div class="spyreveal">
+        <p class="spyrl" id="whoDeck"></p>
+        <h2 class="spyterm" id="whoTerm"></h2>
+        <p class="spysub" id="whoMean"></p>
+      </div>
+    </div>
+    <div class="whometa"><span id="whoQCount"></span><b id="whoWorth"></b></div>
+    <div class="whoans">
+      <button class="btn btn-lg btn-success" type="button" data-ans="yes">Yes</button>
+      <button class="btn btn-lg" type="button" data-ans="maybe">Maybe</button>
+      <button class="btn btn-lg btn-danger" type="button" data-ans="no">No</button>
+    </div>
+    <div class="spybtns whomain2">
+      <button class="btn btn-lg btn-go" type="button" id="whoGot">Guessed it!</button>
+      <button class="btn" type="button" id="whoGive">Give up</button>
+      <button class="btn" type="button" id="whoPause">Pause</button>
+    </div>
+    <p class="spyhint whokeys">Keys: Y yes · N no · M maybe · Enter guessed</p>
+  </section>
+
+  <!-- turn result -->
+  <section class="spyscreen" id="whoRes" hidden>
+    <div class="panel spyoutp whores">
+      <p class="spyrl" id="whoResLabel"></p>
+      <h2 id="whoResTitle"></h2>
+      <p class="whoans2">The answer was <b id="whoResTerm"></b></p>
+      <p class="spyhint" id="whoResMean"></p>
+      <button class="btn btn-lg btn-go" type="button" id="whoNext"></button>
+    </div>
+  </section>
+
+  <!-- game over -->
+  <section class="spyscreen" id="whoEnd" hidden>
+    <div class="panel spyendp">
+      <p class="spyrl">Game over</p>
+      <h2 id="whoWin"></h2>
+      <ol class="spyscores whoscores whofinal" id="whoFinal"></ol>
+      <div class="spybtns"><button class="btn btn-lg btn-go" type="button" id="whoAgain">Play again</button><button class="btn" type="button" id="whoToSetup">Change players or cards</button></div>
+    </div>
+  </section>
+</main>
 </div>
 
 <!-- ================= WHEEL OF FORTUNE ================= -->
@@ -5207,13 +5370,14 @@ chips();lvchips();srcChips();secsSeg();teamList();penaltyUI();renderHistory();bu
 
 /* ---------- Spy: card lists. Each entry is a pair: [card, similar card for the secret spy] ---------- */
 /* ================= views ================= */
-function currentView(){const h=(location.hash||"").replace("#","");const k=h.split("/")[0];return k==="crockick"||k==="spy"||k==="wheel"||k==="jeopardy"?k:"hub"}
+function currentView(){const h=(location.hash||"").replace("#","");const k=h.split("/")[0];return k==="crockick"||k==="spy"||k==="wheel"||k==="jeopardy"||k==="who"?k:"hub"}
 function showView(){
   const v=currentView();document.body.dataset.view=v;
   ["cardForm","cardsModal","settings","summary","confirm","scoreModal"].forEach(id=>{const m=$(id);if(m&&!m.hidden&&!(v==="spy"&&(id==="cardForm"||id==="cardsModal")))m.hidden=true});
-  document.title=v==="spy"?"Spy · Crockick":v==="wheel"?"Wheel of Fortune · Crockick":v==="jeopardy"?"Jeopardy · Crockick":"Crockick";
+  document.title=v==="who"?"Who Am I? · Crockick":v==="spy"?"Spy · Crockick":v==="wheel"?"Wheel of Fortune · Crockick":v==="jeopardy"?"Jeopardy · Crockick":"Crockick";
   if(v==="spy")spyRender();
   if(v==="wheel")wheelRender();
+  if(v==="who")whoRender();
   if(v==="jeopardy"&&window.jpReady)jeopardyRender();
   if(window.mobReady)mobSync();
   if(typeof focusApply==="function")focusApply();
@@ -5223,8 +5387,8 @@ function showView(){
 window.addEventListener("hashchange",showView);
 
 /* ---------- phones: bottom toolbar made from each page's top menu ---------- */
-const TB_HEAD={hub:"#hubView",spy:"#spyView",wheel:"#wheelView",jeopardy:"#jpView"};
-const TB_NAMES={spyHowBtn:"Rules",wLayoutBtn:null,jpFull:"Full screen"};
+const TB_HEAD={hub:"#hubView",spy:"#spyView",wheel:"#wheelView",jeopardy:"#jpView",who:"#whoView"};
+const TB_NAMES={spyHowBtn:"Rules",whoHowBtn:"Rules",wLayoutBtn:null,jpFull:"Full screen"};
 let tbObs=null;
 function tbLabel(src){if(src.classList.contains("themebtn"))return null;if(TB_NAMES[src.id])return TB_NAMES[src.id];const l=src.querySelector(".lbl");return (l&&l.textContent.trim())||src.getAttribute("aria-label")||""}
 function tbBuild(){
@@ -5449,6 +5613,156 @@ $("spyToSetup").onclick=()=>{sg=null;spyRender()};
 document.querySelectorAll("[data-spy-quit]").forEach(b=>b.onclick=()=>{
   if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to end";setTimeout(()=>{b.dataset.armed="";b.textContent="End game"},2500);return}
   b.dataset.armed="";b.textContent="End game";clearInterval(spyTick);sg=null;spyRender()});
+
+
+/* ================= Who Am I? ================= */
+const WHO_TIMES=[[0,"No limit"],[60,"1 min"],[120,"2 min"],[180,"3 min"]];
+const WHO_QS=[[0,"No limit"],[10,"10"],[20,"20"]];
+const WHO_ROUNDS=[[1,"1"],[2,"2"],[3,"3"]];
+const WHO_IDEAS={
+  chr:["Am I a real person?","Am I a man?","Am I from a film?","Am I alive today?","Am I famous for sport?","Can I fly?"],
+  plc:["Am I in a city?","Is it outside?","Can people buy things here?","Do people go here every day?","Is it quiet?","Can I sleep here?"],
+  job:["Do I work outside?","Do I wear a uniform?","Do I help people?","Do I work with my hands?","Do I work at night?","Do I need a car?"],
+  word:["Am I a thing?","Can you eat me?","Am I bigger than a car?","Am I in this room?","Am I an animal?","Is it an action?"],
+  phr:["Is it about moving?","Is it about people?","Do we use it at home?","Is it about stopping something?"],
+  idi:["Is it about feelings?","Is it about money?","Is it about time?","Is it good news?"],
+  sit:["Is it at home?","Is it at work or school?","Is it a problem?","Are there many people?"],
+  sl:["Is it a good word?","Do young people say it?","Is it about people?","Is it about feelings?"]
+};
+const whoStore=store.get("who-cfg")||{};
+const who={
+  players:Array.isArray(whoStore.players)&&whoStore.players.length?whoStore.players.slice(0,20).map(x=>String(x).slice(0,20)):["Player 1","Player 2","Player 3"],
+  decks:Array.isArray(whoStore.decks)&&whoStore.decks.filter(k=>CATS[k]).length?whoStore.decks.filter(k=>CATS[k]):["chr","plc","job"],
+  lv:whoStore.lv||"all",
+  time:WHO_TIMES.some(t=>t[0]===+whoStore.time)?+whoStore.time:120,
+  qmax:WHO_QS.some(t=>t[0]===+whoStore.qmax)?+whoStore.qmax:20,
+  rounds:WHO_ROUNDS.some(t=>t[0]===+whoStore.rounds)?+whoStore.rounds:1,
+  recent:Array.isArray(whoStore.recent)?whoStore.recent.slice(-80):[]
+};
+let wg=null,whoTick=null,whoScreen="whoSetup";
+function whoSave(){store.set("who-cfg",{players:who.players,decks:who.decks,lv:who.lv,time:who.time,qmax:who.qmax,rounds:who.rounds,recent:who.recent.slice(-80)})}
+function whoPool(lv){return allCards().filter(x=>who.decks.includes(x.c)&&(lv==="all"||x.ls.includes(lv)))}
+function whoLvOptions(){const ks=new Set();allCards().forEach(x=>{if(who.decks.includes(x.c))x.ls.forEach(k=>ks.add(k))});return Object.keys(LEVELS).filter(k=>ks.has(k))}
+function whoDeckName(k){return k==="sl"?"Slang":CATS[k].name+"s"}
+function whoShow(id){const moved=whoScreen!==id;whoScreen=id;document.body.classList.toggle("whoplay",id==="whoPlay");["whoSetup","whoPass","whoPlay","whoRes","whoEnd"].forEach(s=>$(s).hidden=s!==id);if(moved){window.scrollTo(0,0);const m=document.querySelector("#whoView>main");if(m)m.scrollTop=0}}
+function whoRender(){
+  if(wg&&whoScreen!=="whoSetup")return;
+  whoShow("whoSetup");
+  const box=$("whoPlayers");if(!box.contains(document.activeElement)||document.activeElement===$("whoNewName")){box.innerHTML="";
+  who.players.forEach((name,i)=>{
+    const r=document.createElement("div");r.className="sprow";
+    r.innerHTML='<span class="n"></span><input maxlength="20" autocomplete="off"><button type="button" aria-label="Remove player">×</button>';
+    r.querySelector(".n").textContent=i+1;const inp=r.querySelector("input");inp.value=name;inp.setAttribute("aria-label","Player "+(i+1)+" name");
+    inp.onchange=()=>{const v=inp.value.trim().slice(0,20)||("Player "+(i+1));who.players[i]=v;inp.value=v;whoSave()};
+    const del=r.querySelector("button");del.disabled=who.players.length<=2;del.title=del.disabled?"Who Am I? needs at least 2 players":"Remove";
+    del.onclick=()=>{if(who.players.length<=2)return;who.players.splice(i,1);whoSave();whoRender()};
+    box.appendChild(r)})}
+  $("whoCount").textContent=who.players.length+" of 20";
+  $("whoAddBtn").disabled=$("whoNewName").disabled=who.players.length>=20;
+  const cats=$("whoCats");cats.innerHTML="";
+  for(const k in CATS){const n=allCards().filter(x=>x.c===k).length;
+    cats.appendChild(makeTile("whocat-"+k,whoDeckName(k),n+" cards",DECK_COL[k],ICONS[k],who.decks.includes(k),!n,()=>{
+      if(who.decks.includes(k)){if(who.decks.length===1){toast("Pick at least one deck");return}who.decks=who.decks.filter(x=>x!==k)}else who.decks.push(k);
+      if(!whoLvOptions().includes(who.lv))who.lv="all";whoSave();whoRender()}))}
+  const lvs=whoLvOptions();$("whoLvWrap").hidden=lvs.length<2;
+  const lb=$("whoLv");lb.innerHTML="";
+  ["all"].concat(lvs).forEach(k=>{const b=document.createElement("button");b.type="button";
+    b.innerHTML=k==="all"?"All levels":'<i aria-hidden="true"></i><span></span>';if(k!=="all"){b.querySelector("span").textContent=LEVELS[k];b.style.setProperty("--lc",LV_COL[k][1])}
+    b.setAttribute("aria-pressed",who.lv===k);b.onclick=()=>{who.lv=k;whoSave();whoRender()};lb.appendChild(b)});
+  const seg=(id,opts,val,set)=>{const s=$(id);s.innerHTML="";s.style.setProperty("--n",opts.length);opts.forEach(([v,l])=>{const b=document.createElement("button");b.type="button";b.textContent=l;b.setAttribute("aria-pressed",v===val);b.onclick=()=>{set(v);whoSave();whoRender()};s.appendChild(b)})};
+  seg("whoT",WHO_TIMES,who.time,v=>who.time=v);seg("whoQ",WHO_QS,who.qmax,v=>who.qmax=v);seg("whoR",WHO_ROUNDS,who.rounds,v=>who.rounds=v);
+  $("whoStart").lastChild.textContent=" Start the game · "+whoPool(who.lv).length+" cards";
+}
+function whoAddPlayer(){if(who.players.length>=20)return;
+  const v=$("whoNewName").value.trim().slice(0,20)||("Player "+(who.players.length+1));
+  if(who.players.some(p=>p.toLowerCase()===v.toLowerCase())){toast("That name is already in the game");return}
+  who.players.push(v);$("whoNewName").value="";whoSave();whoRender();$("whoNewName").focus()}
+$("whoAddBtn").onclick=whoAddPlayer;$("whoNewName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();whoAddPlayer()}});
+$("whoHowBtn").onclick=()=>{if(wg&&whoScreen!=="whoSetup"){toast("Finish or end this game to see the rules");return}$("whoHow").hidden=!$("whoHow").hidden;if(!$("whoHow").hidden)$("whoHow").scrollIntoView({block:"nearest"})};
+function whoWorth(q){return q<=5?3:q<=10?2:1}
+function whoStart(){
+  const names=who.players.map(s=>s.trim()).filter(Boolean);
+  if(names.length<2){toast("Who Am I? needs at least 2 players");return}
+  if(new Set(names.map(n=>n.toLowerCase())).size!==names.length){toast("Two players have the same name");return}
+  const pool=whoPool(who.lv);if(!pool.length){toast("No cards here. Pick other decks or another level.");return}
+  wg={names,scores:names.map(()=>0),turn:0,round:1,used:new Set(),pool,log:[]};
+  whoPass();
+}
+function whoDraw(){
+  let fresh=wg.pool.filter(x=>!wg.used.has(x.c+"|"+x.t)&&!who.recent.includes(x.c+"|"+x.t));
+  if(!fresh.length){fresh=wg.pool.filter(x=>!wg.used.has(x.c+"|"+x.t));who.recent=[]}
+  if(!fresh.length){wg.used.clear();fresh=wg.pool}
+  const c=fresh[Math.floor(Math.random()*fresh.length)];const k=c.c+"|"+c.t;wg.used.add(k);who.recent.push(k);who.recent=who.recent.slice(-80);whoSave();return c}
+function whoMini(el,hl){const ul=$(el);ul.innerHTML="";wg.names.forEach((n,i)=>{const li=document.createElement("li");if(i===hl)li.className="now";const s=document.createElement("span");s.textContent=n;const b=document.createElement("b");b.textContent=wg.scores[i];li.append(s,b);ul.appendChild(li)})}
+function whoPass(){
+  clearInterval(whoTick);
+  wg.card=whoDraw();
+  $("whoPassRound").textContent="Round "+wg.round+" of "+who.rounds+" · Player "+(wg.turn+1)+" of "+wg.names.length;
+  $("whoPassName").textContent=wg.names[wg.turn];
+  const ideas=[];who.decks.forEach(k=>(WHO_IDEAS[k]||[]).forEach(q=>{if(!ideas.includes(q))ideas.push(q)}));
+  const pick=ideas.sort(()=>Math.random()-.5).slice(0,4);
+  const box=$("whoIdeas");box.innerHTML='<small>Question ideas</small><div></div>';pick.forEach(q=>{const s=document.createElement("span");s.textContent=q;box.lastChild.appendChild(s)});
+  whoMini("whoMini",wg.turn);whoShow("whoPass");$("whoGo").focus();
+}
+$("whoGo").onclick=()=>{
+  const c=wg.card;wg.q=0;wg.left=who.time;wg.paused=false;wg.done=false;
+  $("whoPlayName").textContent=wg.names[wg.turn];
+  $("whoDeck").textContent=wg.names[wg.turn]+" is… · "+(c.c==="sl"?"Slang":CATS[c.c].name);
+  $("whoTerm").textContent=c.t;$("whoMean").textContent=c.m||"";
+  $("whoCard").classList.remove("paused");$("whoPause").textContent="Pause";
+  whoMeta();$("whoTimer").classList.toggle("off",!who.time);whoClock();
+  if(who.time)whoTick=setInterval(()=>{if(wg.paused||wg.done)return;wg.left--;whoClock();if(wg.left<=10&&wg.left>0)beep(880,.05);if(wg.left<=0)whoFinish("time")},1000);
+  whoShow("whoPlay");
+};
+function whoClock(){const s=Math.max(0,wg.left);$("whoClock").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");$("whoTimer").classList.toggle("low",!!who.time&&s<=15)}
+function whoMeta(){$("whoQCount").textContent="Questions: "+wg.q+(who.qmax?" of "+who.qmax:"");$("whoWorth").textContent="Worth "+whoWorth(Math.max(1,wg.q))+(whoWorth(Math.max(1,wg.q))===1?" point":" points")}
+function whoAnswer(kind){if(!wg||wg.done||whoScreen!=="whoPlay"||wg.paused)return;
+  if(who.qmax&&wg.q>=who.qmax){toast("No questions left. Make a guess!");return}
+  wg.q++;whoMeta();beep(kind==="yes"?660:kind==="no"?330:500,.06);
+  if(who.qmax&&wg.q>=who.qmax){toast("That was the last question. One guess!");}
+}
+document.querySelectorAll("#whoPlay [data-ans]").forEach(b=>b.onclick=()=>whoAnswer(b.dataset.ans));
+$("whoPause").onclick=()=>{if(!wg||wg.done)return;wg.paused=!wg.paused;$("whoPause").textContent=wg.paused?"Resume":"Pause";$("whoCard").classList.toggle("paused",wg.paused)};
+$("whoGot").onclick=()=>whoFinish("got");
+$("whoGive").onclick=()=>{const b=$("whoGive");if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to give up";setTimeout(()=>{b.dataset.armed="";b.textContent="Give up"},2500);return}b.dataset.armed="";b.textContent="Give up";whoFinish("gave")};
+function whoFinish(why){
+  if(!wg||wg.done)return;wg.done=true;clearInterval(whoTick);
+  const i=wg.turn,c=wg.card,pts=why==="got"?whoWorth(Math.max(1,wg.q)):0;wg.scores[i]+=pts;wg.log.push({i,t:c.t,why,q:wg.q,pts});
+  const r=document.querySelector("#whoRes .whores");r.classList.toggle("ok",why==="got");
+  $("whoResLabel").textContent=wg.names[i]+(why==="got"?" · "+wg.q+(wg.q===1?" question":" questions"):"");
+  $("whoResTitle").textContent=why==="got"?"Guessed it! +"+pts+(pts===1?" point":" points"):why==="time"?"Time's up!":"Not this time";
+  $("whoResTerm").textContent=c.t;$("whoResMean").textContent=c.m||"";
+  if(why==="got")beep(990,.15);else beep(300,.3);
+  const last=wg.turn===wg.names.length-1&&wg.round>=who.rounds;
+  $("whoNext").textContent=last?"See the results":"Next: "+wg.names[(wg.turn+1)%wg.names.length];
+  whoShow("whoRes");$("whoNext").focus();
+}
+$("whoNext").onclick=()=>{
+  if(wg.turn===wg.names.length-1){if(wg.round>=who.rounds)return whoEnd();wg.round++;wg.turn=0}else wg.turn++;
+  whoPass()};
+function whoEnd(){
+  clearInterval(whoTick);
+  const order=wg.names.map((n,i)=>i).sort((a,b)=>wg.scores[b]-wg.scores[a]);const top=wg.scores[order[0]];
+  const winners=order.filter(i=>wg.scores[i]===top);
+  $("whoWin").textContent=top===0?"No one guessed this time!":winners.length>1?"It's a tie: "+winners.map(i=>wg.names[i]).join(" & ")+"!":wg.names[winners[0]]+" wins!";
+  const ul=$("whoFinal");ul.innerHTML="";let place=0,prev=null;
+  order.forEach((i,k)=>{if(wg.scores[i]!==prev){place=k+1;prev=wg.scores[i]}const li=document.createElement("li");const s=document.createElement("span");const em=document.createElement("em");em.textContent=place+".";s.append(em,document.createTextNode(wg.names[i]));const b=document.createElement("b");b.textContent=wg.scores[i];li.append(s,b);ul.appendChild(li)});
+  whoShow("whoEnd");$("whoAgain").focus();
+}
+$("whoAgain").onclick=whoStart;
+$("whoStart").onclick=whoStart;
+$("whoToSetup").onclick=()=>{wg=null;whoRender()};
+document.querySelectorAll("[data-who-quit]").forEach(b=>b.onclick=()=>{
+  if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to end";setTimeout(()=>{b.dataset.armed="";b.textContent="End game"},2500);return}
+  b.dataset.armed="";b.textContent="End game";clearInterval(whoTick);if(wg&&wg.log.length)whoEnd();else{wg=null;whoRender()}});
+document.addEventListener("keydown",e=>{
+  if(document.body.dataset.view!=="who"||e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+  const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;
+  if(document.querySelector(".modal:not([hidden])"))return;
+  if(whoScreen==="whoPlay"){const k=e.key.toLowerCase();
+    if(k==="y"){e.preventDefault();whoAnswer("yes")}else if(k==="n"){e.preventDefault();whoAnswer("no")}else if(k==="m"){e.preventDefault();whoAnswer("maybe")}
+    else if(e.key==="Enter"){e.preventDefault();whoFinish("got")}else if(k==="p"||e.key===" "){e.preventDefault();$("whoPause").click()}}
+});
 
 /* ================= Wheel of Fortune ================= */
 const W_MAX=4, W_MAXE=100;
