@@ -1,5 +1,5 @@
 /* Crockick service worker: works offline after the first visit, updates itself when online */
-const VERSION = "crockick-v9";
+const VERSION = "crockick-v10";
 const CORE = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png", "./k-mark.svg"];
 
 self.addEventListener("install", e => {

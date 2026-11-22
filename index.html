@@ -881,6 +881,53 @@ body[data-view="wheel"]{overflow-x:clip}
 @media (max-width:1100px){.wlayout.wide .wgrid.n3 .wwrap,.wlayout.wide .wgrid.n4 .wwrap{max-width:min(560px,calc(50vh - 120px))}}
 .wlayout.wide .wpanel{margin-top:var(--s2)}
 
+
+/* ---------- focus mode: only the game, nothing scrolls the page ---------- */
+.focusexit{display:none}
+html.focus,body.focus{height:100%;overflow:hidden;overscroll-behavior:none}
+body.focus{display:flex;flex-direction:column;height:100dvh;margin:0}
+body.focus .foot{display:none!important}
+body.focus .view{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+body.focus .view>.band{display:none}
+body.focus .view>main,body.focus>main.v-croc{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;width:100%;padding-block:56px 12px}
+body.focus .focusexit{display:inline-flex;position:fixed;top:10px;right:max(12px,env(safe-area-inset-right,0px));z-index:60;align-items:center;gap:6px;height:36px;padding:0 14px 0 10px;border:0;border-radius:999px;
+  background:var(--surface);color:var(--text);font:inherit;font-size:var(--fs-xs);font-weight:800;cursor:pointer;box-shadow:0 0 0 1px var(--line),0 3px 0 var(--line);opacity:.88}
+body.focus .focusexit:hover{opacity:1}
+.focusexit svg,.focusbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.focusbtn svg{width:20px;height:20px}
+/* Crockick: keep scores, card, timer */
+body.focus>header.band.v-croc{flex:none}
+body.focus>header.band.v-croc .topbar{display:none}
+body.focus>header.band.v-croc .inner{padding-block:10px 24px;padding-right:150px}
+body.focus>main.v-croc{padding-top:14px}
+body.focus #rules,body.focus #logBox{display:none!important}
+body.focus .arena .card{min-height:min(380px,calc(100dvh - 330px))}
+/* Spy */
+body.focus #spyHow{display:none!important}
+/* Wheel: wheels only */
+body.focus .wpanel,body.focus .wtheater{display:none!important}
+body.focus .wlayout{grid-template-columns:minmax(0,1fr)}
+body.focus .wstage{margin-inline:0!important;padding:0!important}
+body.focus .wgrid{width:100%;max-width:1800px;margin-inline:auto;align-items:center}
+body.focus .wgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.focus .wgrid.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.focus .wgrid.n1 .wwrap{max-width:min(980px,calc(100dvh - 230px))}
+body.focus .wgrid.n2 .wwrap{max-width:min(720px,calc(100dvh - 230px))}
+body.focus .wgrid.n3 .wwrap,body.focus .wgrid.n4 .wwrap{max-width:min(560px,calc(100dvh - 260px))}
+@media (max-width:1100px){body.focus .wgrid.n3,body.focus .wgrid.n4{grid-template-columns:repeat(2,minmax(0,1fr))}body.focus .wgrid.n3 .wwrap,body.focus .wgrid.n4 .wwrap{max-width:min(560px,calc(50dvh - 120px))}}
+@media (max-width:560px){body.focus .wgrid.n2,body.focus .wgrid.n3,body.focus .wgrid.n4{grid-template-columns:minmax(0,1fr)}}
+/* Jeopardy: board sized to the screen */
+body.focus .jpmain{gap:var(--s3);max-width:none}
+body.focus .jpgridwrap.bleed{width:auto;margin-left:0}
+body.focus #jpPlay .jpteams{max-width:1080px;width:100%;margin-inline:auto}
+body.focus #jpPlay{gap:var(--s3)}
+body.focus #jpPlay .jpbar{padding-right:150px}
+body.focus .jpboard .jpcell{min-height:max(40px,calc((100dvh - 290px) / var(--r,6)))}
+body.focus .jpboard .jpcat{min-height:max(40px,min(80px,calc((100dvh - 290px) / var(--r,6))))}
+body.focus .jpteam{padding:var(--s2)}
+body.focus .jpteam b{font-size:1.8rem}
+@media (max-width:640px){body.focus>header.band.v-croc .inner,body.focus #jpPlay .jpbar{padding-right:16px}body.focus>header.band.v-croc .inner{padding-top:54px}}
+
 /* ---------- game tickets (hub) ---------- */
 .games{display:flex!important;flex-direction:column;gap:var(--s4)}
 .ticket{--tc1:#48C077;--tc2:#2E9E5B;--tc3:#23804A;--tink:#1F7A45;--ttint:#E3F3E8;--aw:330px;position:relative;display:grid;grid-template-columns:var(--aw) minmax(0,1fr) auto;align-items:center;background:var(--surface);border-radius:28px;box-shadow:0 6px 0 var(--tc3);color:var(--text);text-decoration:none;transition:transform .15s var(--ease),box-shadow .15s var(--ease);min-height:200px}
@@ -1270,6 +1317,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
           <button class="navbtn" id="cardsBtn" aria-haspopup="dialog" aria-label="Cards"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2.5"/><path d="M5 7v11.5A2.5 2.5 0 0 0 7.5 21H15"/></svg><span class="lbl">Cards</span></button>
           <button class="navbtn" id="howBtn" aria-label="How to play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7"/><path d="M12 17.2v.1"/></svg><span class="lbl">How to play</span></button>
           <button class="navbtn" id="toggleSettings" aria-haspopup="dialog" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span class="lbl">Settings</span></button>
+          <button class="navbtn focusbtn" type="button" aria-pressed="false" aria-label="Focus mode: hide everything except the game" title="Focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span class="lbl">Focus</span></button>
           <button class="navbtn" id="themeBtn" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="lbl" id="themeLbl">Dark mode</span></button>
         </div>
         <button class="navmain" id="reset" aria-haspopup="dialog" aria-label="New game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg><span class="lbl">New game</span></button>
@@ -1410,6 +1458,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <a class="navmain backbtn" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Games</span></a>
       <div class="wtitle"><p class="spyword" aria-label="Spy"><span aria-hidden="true">S</span><span aria-hidden="true">p</span><span aria-hidden="true">y</span></p><p class="wtag">Hmm, who is who?</p></div>
       <div class="segnav">
+        <button class="navbtn focusbtn" type="button" aria-pressed="false" aria-label="Focus mode: hide everything except the game" title="Focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span class="lbl">Focus</span></button>
         <button class="navbtn" type="button" id="spyHowBtn" aria-label="How to play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7"/><path d="M12 17.2v.1"/></svg><span class="lbl">How to play</span></button>
         <button class="navbtn themebtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="lbl themelbl">Dark mode</span></button>
       </div>
@@ -1542,6 +1591,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <a class="navmain backbtn" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Games</span></a>
       <div class="wtitle"><p class="spyword wword" aria-label="Wheel"><span aria-hidden="true">W</span><span aria-hidden="true">h</span><span aria-hidden="true">e</span><span aria-hidden="true">e</span><span aria-hidden="true">l</span></p><p class="wtag">Let's see who's lucky today!</p></div>
       <div class="segnav">
+        <button class="navbtn focusbtn" type="button" aria-pressed="false" aria-label="Focus mode: hide everything except the game" title="Focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span class="lbl">Focus</span></button>
         <button class="navbtn" type="button" id="wLayoutBtn" aria-pressed="false"><svg class="ic-wide" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/></svg><svg class="ic-side" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9.5 4.5v15"/></svg><span class="lbl" id="wLayoutLbl">Theater mode</span></button>
         <button class="navbtn themebtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="lbl themelbl">Dark mode</span></button>
       </div>
@@ -1716,6 +1766,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
       <a class="navmain backbtn" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Games</span></a>
       <div class="wtitle"><p class="spyword jpword" aria-label="Jeopardy"><span aria-hidden="true">J</span><span aria-hidden="true">e</span><span aria-hidden="true">o</span><span aria-hidden="true">p</span><span aria-hidden="true">a</span><span aria-hidden="true">r</span><span aria-hidden="true">d</span><span aria-hidden="true">y</span></p><p class="wtag">Pick a category, win the points!</p></div>
       <div class="segnav">
+        <button class="navbtn focusbtn" type="button" aria-pressed="false" aria-label="Focus mode: hide everything except the game" title="Focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span class="lbl">Focus</span></button>
         <button class="navbtn" type="button" id="jpFull" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="lbl">Full screen</span></button>
         <button class="navbtn themebtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg><span class="lbl themelbl">Dark mode</span></button>
       </div>
@@ -1899,6 +1950,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
 <div class="jpprint" id="jpPrint" aria-hidden="true"></div>
 </div>
 
+<button class="focusexit" type="button" id="focusExit" title="Exit focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span>Exit focus</span></button>
 <footer class="foot" aria-labelledby="footH">
   <div class="inner">
     <div class="brand">
@@ -5106,9 +5158,20 @@ function showView(){
   if(v==="wheel")wheelRender();
   if(v==="jeopardy"&&window.jpReady)jeopardyRender();
   if(window.mobReady)mobSync();
+  if(typeof focusApply==="function")focusApply();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",showView);
+/* ---------- focus mode ---------- */
+let focusOn=store.get("croc-focus")==="1";
+function focusApply(){const v=document.body.dataset.view;const on=focusOn&&v&&v!=="hub"&&!(document.body.classList.contains("mob")&&v==="crockick");
+  const was=document.body.classList.contains("focus");document.body.classList.toggle("focus",on);document.documentElement.classList.toggle("focus",on);
+  document.querySelectorAll(".focusbtn").forEach(b=>b.setAttribute("aria-pressed",on));
+  if(on!==was){window.scrollTo(0,0);document.querySelectorAll(".view>main,main.v-croc").forEach(m=>m.scrollTop=0);setTimeout(()=>window.dispatchEvent(new Event("resize")),60)}}
+function focusToggle(){focusOn=!document.body.classList.contains("focus");store.set("croc-focus",focusOn?"1":"0");focusApply();toast(focusOn?"Focus mode on. Press F or Exit focus to leave.":"Focus mode off")}
+document.querySelectorAll(".focusbtn").forEach(b=>b.onclick=focusToggle);$("focusExit").onclick=focusToggle;
+document.addEventListener("keydown",e=>{if((e.key==="f"||e.key==="F")&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&document.body.dataset.view!=="hub"){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden])"))return;e.preventDefault();focusToggle()}});
+
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
   const h=a.getAttribute("href");if(h==="#"||h==="#crockick"||h==="#spy"||h==="#wheel"||h==="#jeopardy"){e.preventDefault();
     if(h==="#"){try{history.replaceState(null,"",location.pathname+location.search)}catch(x){location.hash=""}showView()}else location.hash=h}
@@ -5936,7 +5999,7 @@ $("jpResume").onclick=jpBoardUI;
 function jpBoardUI(){
   if(!jpGame||!jpCur){jpLibUI();return}
   jpShow("jpPlay");const b=jpCur;$("jpPlayTitle").textContent=b.title;
-  const g=$("jpBoard");g.innerHTML="";g.style.setProperty("--c",b.cats.length);g.classList.toggle("wide",b.cats.length>6);g.parentElement.classList.toggle("bleed",b.cats.length>6);
+  const g=$("jpBoard");g.innerHTML="";g.style.setProperty("--c",b.cats.length);g.style.setProperty("--r",b.rows+1);g.classList.toggle("wide",b.cats.length>6);g.parentElement.classList.toggle("bleed",b.cats.length>6);
   b.cats.forEach((c,ci)=>{const h=document.createElement("div");h.className="jpcat";h.textContent=c.name||"Category "+(ci+1);g.appendChild(h)});
   for(let r=0;r<b.rows;r++)b.cats.forEach((c,ci)=>{const x=c.q[r],key=ci+"-"+r,used=jpGame.used.includes(key)||!jpReady(x);
     const btn=document.createElement("button");btn.type="button";btn.className="jpcell"+(used?" used":"");btn.textContent=jpVal(b,r);btn.disabled=used;
