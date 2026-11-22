@@ -1182,6 +1182,9 @@ body[data-view="jeopardy"]{overflow-x:clip}
 .jpteam b.neg{color:var(--danger)}
 .jpteam .pm{display:flex;gap:6px}
 .jpteam .pm button{width:40px;height:36px;border:0;border-radius:10px;background:var(--surface-2);color:var(--text);font-size:1.1rem;font-weight:800;cursor:pointer}
+.jpteam .pm button.star{color:#E0A400;font-size:1rem}
+#jpBonus .quick{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#jpBonus .custom{display:flex;gap:8px}#jpBonus .custom .input{flex:1;min-width:0}
 .jpteam.lead{border-color:#FFD166;box-shadow:0 0 0 2px #FFD166}
 /* clue overlay */
 .jpclue{position:fixed;inset:0;z-index:55;background:#123F5E;color:#fff;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));overflow:auto}
@@ -1873,6 +1876,24 @@ body[data-view="jeopardy"]{overflow-x:clip}
     <div class="sheet-b jpcellb"><p class="jpnote">Anyone who opens this link sees the game and can save their own copy.</p>
     <textarea class="input jpsharelink" id="jpShareLink" rows="4" readonly aria-label="Share link"></textarea></div>
     <div class="sheet-f jpcellbtns"><button class="btn btn-success" type="button" id="jpShareCopy">Copy link</button><button class="btn" type="button" id="jpShareFile">Download file</button></div>
+  </div>
+</div>
+<div class="modal" id="jpBonus" hidden role="dialog" aria-modal="true" aria-labelledby="jpBonusH">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="jpBonusH">Give or take points</h2><button class="iconbtn" type="button" data-close aria-label="Close">×</button></div>
+    <div class="sheet-b jpcellb">
+      <div class="group"><span class="group-l">Team</span><div class="chips" id="jpBonusTeams"></div></div>
+      <div class="group"><span class="group-l">Quick</span>
+        <div class="quick" id="jpBonusQuick">
+          <button class="btn btn-success btn-sm" type="button" data-d="1">+1</button><button class="btn btn-success btn-sm" type="button" data-d="5">+5</button><button class="btn btn-success btn-sm" type="button" data-d="10">+10</button><button class="btn btn-success btn-sm" type="button" data-d="50">+50</button><button class="btn btn-success btn-sm" type="button" data-d="100">+100</button>
+          <button class="btn btn-danger btn-sm" type="button" data-d="-1">−1</button><button class="btn btn-danger btn-sm" type="button" data-d="-5">−5</button><button class="btn btn-danger btn-sm" type="button" data-d="-10">−10</button><button class="btn btn-danger btn-sm" type="button" data-d="-50">−50</button><button class="btn btn-danger btn-sm" type="button" data-d="-100">−100</button>
+        </div></div>
+      <div class="group"><label class="group-l" for="jpBonusAmt">Any number</label>
+        <div class="custom"><input class="input" type="number" id="jpBonusAmt" min="1" step="1" inputmode="numeric" placeholder="e.g. 13"><button class="btn btn-success" type="button" id="jpBonusAdd">Give</button><button class="btn btn-danger" type="button" id="jpBonusSub">Take</button></div>
+        <p class="err" id="jpBonusErr" hidden></p></div>
+      <div class="group"><label class="group-l" for="jpBonusWhy">Reason (optional)</label>
+        <input class="input" type="text" id="jpBonusWhy" maxlength="60" placeholder="e.g. Great pronunciation"></div>
+    </div>
   </div>
 </div>
 <div class="jpprint" id="jpPrint" aria-hidden="true"></div>
@@ -5926,11 +5947,25 @@ function jpBoardUI(){
 function jpScoreUI(){
   const box=$("jpScore");box.innerHTML="";const top=Math.max(...jpGame.teams.map(t=>t.score));const step=jpCur.vs||jpCur.v0;
   jpGame.teams.forEach((t,i)=>{const d=document.createElement("div");d.className="jpteam"+(t.score===top&&top>0?" lead":"");
-    d.innerHTML='<span></span><b></b><div class="pm"><button type="button">−</button><button type="button">+</button></div>';
+    d.innerHTML='<span></span><b></b><div class="pm"><button type="button">−</button><button type="button" class="star">★</button><button type="button">+</button></div>';
     d.querySelector("span").textContent=t.name;const s=d.querySelector("b");s.textContent=t.score;if(t.score<0)s.className="neg";
-    const [m,p]=d.querySelectorAll(".pm button");m.setAttribute("aria-label","Take "+step+" from "+t.name);p.setAttribute("aria-label","Give "+step+" to "+t.name);
+    const [m,bn,p]=d.querySelectorAll(".pm button");bn.setAttribute("aria-label","Give or take any points for "+t.name);bn.title="Extra points";bn.onclick=()=>jpBonusOpen(i);m.setAttribute("aria-label","Take "+step+" from "+t.name);p.setAttribute("aria-label","Give "+step+" to "+t.name);
     m.onclick=()=>jpAdd(i,-step,"Manual");p.onclick=()=>jpAdd(i,step,"Manual");box.appendChild(d)});
 }
+let jpBonusTeam=0;
+function jpBonusChips(){const box=$("jpBonusTeams");box.innerHTML="";jpGame.teams.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="chip";b.setAttribute("aria-pressed",i===jpBonusTeam);
+  b.innerHTML='<span class="nm"></span><small></small>';b.querySelector(".nm").textContent=t.name;b.querySelector("small").textContent=t.score;b.onclick=()=>{jpBonusTeam=i;jpBonusChips()};box.appendChild(b)})}
+function jpBonusOpen(i){jpBonusTeam=i;$("jpBonusErr").hidden=true;$("jpBonusAmt").value="";$("jpBonusWhy").value="";jpBonusChips();$("jpBonus").hidden=false;setTimeout(()=>$("jpBonusAmt").focus(),30)}
+function jpBonusGive(delta){const t=jpGame.teams[jpBonusTeam];if(!t||!delta)return;const why=$("jpBonusWhy").value.trim();
+  jpAdd(jpBonusTeam,delta,why||(delta>0?"Extra points":"Points taken"));jpBonusChips();toast((delta>0?"+":"−")+Math.abs(delta)+" for "+t.name+(why?" · "+why:"")+" → "+t.score,delta>0?"ok":"skip")}
+function jpBonusCustom(sign){const v=$("jpBonusAmt").value.trim();
+  if(!/^\d+$/.test(v)||+v<1||+v>100000){$("jpBonusErr").hidden=false;$("jpBonusErr").textContent="Type a whole number, 1 or more.";$("jpBonusAmt").focus();return}
+  $("jpBonusErr").hidden=true;jpBonusGive(sign*(+v));$("jpBonusAmt").value=""}
+$("jpBonusQuick").addEventListener("click",e=>{const b=e.target.closest("[data-d]");if(b)jpBonusGive(+b.dataset.d)});
+$("jpBonusAdd").onclick=()=>jpBonusCustom(1);$("jpBonusSub").onclick=()=>jpBonusCustom(-1);
+$("jpBonusAmt").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();jpBonusCustom(e.shiftKey?-1:1)}});
+$("jpBonus").addEventListener("click",e=>{if(e.target===$("jpBonus")||e.target.closest("[data-close]"))$("jpBonus").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("jpBonus").hidden){$("jpBonus").hidden=true;e.stopPropagation()}},true);
 function jpAdd(i,delta,why,key){if(!delta&&!key)return;jpGame.teams[i].score+=delta;jpGame.log.push({i,delta,why,key:key||null});jpSaveGame();jpScoreUI();$("jpUndo").disabled=false}
 $("jpUndo").onclick=()=>{const l=jpGame.log.pop();if(!l)return;jpGame.teams[l.i].score-=l.delta;if(l.key&&!jpGame.log.some(x=>x.key===l.key))jpGame.used=jpGame.used.filter(k=>k!==l.key);jpSaveGame();jpBoardUI();toast("Undone: "+(l.delta>0?"+":"")+l.delta+" for "+jpGame.teams[l.i].name)};
 $("jpPlayBack").onclick=jpLibUI;
