@@ -1963,7 +1963,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
 <div class="jpprint" id="jpPrint" aria-hidden="true"></div>
 </div>
 
-<button class="focusexit" type="button" id="focusExit" title="Exit focus mode (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span>Exit focus</span></button>
+<button class="focusexit" type="button" id="focusExit" title="Exit focus mode (Esc or F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.6"/></svg><span>Exit focus</span></button>
 <footer class="foot" aria-labelledby="footH">
   <div class="inner">
     <div class="brand">
@@ -5181,8 +5181,11 @@ function focusApply(){const v=document.body.dataset.view;const on=focusOn&&v&&v!
   const was=document.body.classList.contains("focus");document.body.classList.toggle("focus",on);document.documentElement.classList.toggle("focus",on);
   document.querySelectorAll(".focusbtn").forEach(b=>b.setAttribute("aria-pressed",on));
   if(on!==was){window.scrollTo(0,0);document.querySelectorAll(".view>main,main.v-croc").forEach(m=>m.scrollTop=0);setTimeout(()=>window.dispatchEvent(new Event("resize")),60)}}
-function focusToggle(){focusOn=!document.body.classList.contains("focus");store.set("croc-focus",focusOn?"1":"0");focusApply();toast(focusOn?"Focus mode on. Press F or Exit focus to leave.":"Focus mode off")}
+function focusToggle(){focusOn=!document.body.classList.contains("focus");store.set("croc-focus",focusOn?"1":"0");focusApply();toast(focusOn?"Focus mode on. Press Esc to leave.":"Focus mode off")}
 document.querySelectorAll(".focusbtn").forEach(b=>b.onclick=focusToggle);$("focusExit").onclick=focusToggle;
+document.addEventListener("keydown",e=>{if(e.key!=="Escape"||!document.body.classList.contains("focus"))return;
+  if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden]),.jpzoom:not([hidden]),.wpop"))return;
+  e.preventDefault();e.stopImmediatePropagation();focusToggle()},true);
 document.addEventListener("keydown",e=>{if((e.key==="f"||e.key==="F")&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&document.body.dataset.view!=="hub"){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden])"))return;e.preventDefault();focusToggle()}});
 
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
