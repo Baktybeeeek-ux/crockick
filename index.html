@@ -1193,7 +1193,14 @@ body[data-view="jeopardy"]{overflow-x:clip}
 .jptimer.low{background:#EF6461}
 .jpqa{display:flex;flex-direction:column;align-items:center;gap:var(--s5);width:100%}
 .jpq{margin:0;font-size:clamp(1.6rem,4.4vw,3.4rem);font-weight:800;line-height:1.2;max-width:24ch;overflow-wrap:anywhere}
-.jpimg{max-width:min(100%,640px);max-height:42vh;border-radius:16px;object-fit:contain;background:#fff}
+.jpimg{max-width:min(100%,640px);max-height:42vh;border-radius:16px;object-fit:contain;background:#fff;cursor:zoom-in}
+.jpvideo.gif{aspect-ratio:1/1;max-width:min(100%,420px)}
+.jpvideo.jppage{aspect-ratio:auto;height:46vh;background:#fff}
+.jporig{display:block;margin-top:6px;font-size:13px;font-weight:600;color:inherit;opacity:.7}
+.jpmerr.small{font-size:12.5px;opacity:.8}
+.jpzoom{position:fixed;inset:0;z-index:9999;background:rgba(10,20,15,.88);display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:16px}
+.jpzoom[hidden]{display:none}
+.jpzoom img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;background:#fff}
 .jpa{margin:0;padding:var(--s3) var(--s6);border-radius:18px;background:#FFD166;color:#202923;font-size:clamp(1.3rem,3.4vw,2.4rem);font-weight:800;overflow-wrap:anywhere;animation:wpop .3s cubic-bezier(.2,1.4,.4,1)}
 .jpa.noans{background:rgba(255,255,255,.14);color:#D6E6F2;font-size:clamp(1rem,2.2vw,1.4rem)}
 .jpa.noans:empty{display:none}
@@ -1723,6 +1730,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
         <button class="btn btn-success" type="button" id="jpNew">+ New game</button>
       </div>
     </div>
+    <div class="jpzoom" id="jpZoom" hidden><img alt="" referrerpolicy="no-referrer"></div>
     <input type="file" id="jpFile" accept=".json,.html,.htm,application/json,text/html,image/*" multiple hidden>
     <div class="jpsaved" id="jpList"></div>
     <p class="jpnote" id="jpLibNote">Games are saved on this device. Use Share link or Download to move a game to another device.</p>
@@ -5817,24 +5825,46 @@ function jpVideoEmbed(u){
   let m=u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,15})/);
   if(m){const t=u.match(/[?&](?:t|start)=(\d+)/);return {kind:"frame",src:"https://www.youtube-nocookie.com/embed/"+m[1]+"?rel=0"+(t?"&start="+t[1]:"")}}
   m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);if(m)return {kind:"frame",src:"https://player.vimeo.com/video/"+m[1]};
-  if(/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(u))return {kind:"file",src:u};
+  m=u.match(/tiktok\.com\/.*\/video\/(\d+)/);if(m)return {kind:"frame",src:"https://www.tiktok.com/embed/v2/"+m[1]};
+  m=u.match(/instagram\.com\/(?:[^/]+\/)?(p|reel|reels)\/([A-Za-z0-9_-]+)/);if(m)return {kind:"frame",src:"https://www.instagram.com/"+(m[1]==="p"?"p":"reel")+"/"+m[2]+"/embed"};
+  m=u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([A-Za-z0-9_-]{10,})/);if(m)return {kind:"frame",src:"https://drive.google.com/file/d/"+m[1]+"/preview"};
+  m=u.match(/tenor\.com\/(?:[a-z-]+\/)?view\/[^?#]*?-(\d{5,})(?:[?#]|$)/);if(m)return {kind:"frame",src:"https://tenor.com/embed/"+m[1],gif:true};
+  if(/\.(mp4|webm|ogg|mov|m4v)(\?|#|$)/i.test(u))return {kind:"file",src:u};
+  return null;
+}
+/* a link that is really a picture (.jpg, .gif, Giphy page, Imgur page…) */
+function jpImgFromLink(u){
+  if(/^data:image\//.test(u))return u;
+  let m=u.match(/giphy\.com\/(?:gifs|stickers)\/(?:[^/?#]*-)?([A-Za-z0-9]{8,})(?:[/?#]|$)/);if(m)return "https://media.giphy.com/media/"+m[1]+"/giphy.gif";
+  m=u.match(/^https?:\/\/(?:www\.)?imgur\.com\/([A-Za-z0-9]{5,8})(?:[?#]|$)/);if(m)return "https://i.imgur.com/"+m[1]+".gif";
+  if(/\.(png|jpe?g|gif|webp|avif|bmp|svg)(\?|#|$)/i.test(u)||/(^https?:\/\/)(i\.pinimg\.com|media\d*\.tenor\.com|media\d*\.giphy\.com|i\.imgur\.com|.*\.googleusercontent\.com|encrypted-tbn\d\.gstatic\.com)\//i.test(u))return u;
   return null;
 }
 const jpInClaude=/claude\.ai|claudeusercontent|claude\.site/.test(location.hostname);
+const jpProxy=u=>"https://wsrv.nl/?url="+encodeURIComponent(u)+"&n=-1";
+document.addEventListener("click",e=>{const z=$("jpZoom");if(z&&!z.hidden&&e.target.closest("#jpZoom")){z.hidden=true}});
+document.addEventListener("keydown",e=>{const z=$("jpZoom");if(e.key==="Escape"&&z&&!z.hidden){z.hidden=true;e.stopPropagation()}},true);
+function jpZoom(src){const z=$("jpZoom");if(!z)return;z.querySelector("img").src=src;z.hidden=false}
 function jpMShow(box,m,small){
   box.innerHTML="";box.hidden=!m;if(!m)return;
-  const open=(label)=>{const a=document.createElement("a");a.className="btn jpopen";a.href=m.u;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;return a};
-  if(m.t==="image"){const im=document.createElement("img");im.className="jpimg";im.alt="";im.referrerPolicy="no-referrer";im.decoding="async";
-    im.onerror=()=>{box.innerHTML="";const p=document.createElement("p");p.className="jpmerr";const web=/^https?:/i.test(m.u);
-      p.textContent=!web?"The picture didn't load.":jpInClaude?"Pictures from other websites can't show inside Claude. Open the GitHub version of Crockick to see them, or upload the picture from your device.":"This website doesn't let other pages show its picture. Open it below, or save it and upload it from your device.";
-      box.appendChild(p);if(web)box.appendChild(open("Open picture ↗"))};im.src=m.u;box.appendChild(im);return}
-  if(m.t==="link"){let host="";try{host=new URL(m.u).hostname.replace(/^www\./,"")}catch(e){}box.appendChild(open("Open link"+(host?" · "+host:"")+" ↗"));return}
-  const v=jpVideoEmbed(m.u);
-  if(v&&v.kind==="frame"&&!small){const f=document.createElement("iframe");f.className="jpvideo";f.src=v.src;f.title="Video";f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";box.appendChild(f)}
-  else if(v&&v.kind==="file"){const el=document.createElement("video");el.className="jpvideo";el.src=v.src;el.referrerPolicy="no-referrer";el.controls=true;el.playsInline=true;el.preload="metadata";box.appendChild(el)}
-  else if(small&&v){const p=document.createElement("p");p.className="jpmok";p.textContent="✓ Video found. It plays during the game.";box.appendChild(p);return}
-  else if(!v){const p=document.createElement("p");p.className="jpmerr";p.textContent=small?"This isn't a YouTube, Vimeo or video file link. It will show as a button that opens the page.":"";if(small)box.appendChild(p)}
-  box.appendChild(open("Open video in a new tab ↗"));
+  const note=(cls,t)=>{const p=document.createElement("p");p.className=cls;p.textContent=t;box.appendChild(p)};
+  const orig=()=>{const a=document.createElement("a");a.className="jporig";a.href=m.u;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Original page ↗";box.appendChild(a)};
+  const v=m.t!=="image"?jpVideoEmbed(m.u):null;
+  const img=m.t==="image"?m.u:(v?null:jpImgFromLink(m.u));
+  if(img){const im=document.createElement("img");im.className="jpimg";im.alt="";im.referrerPolicy="no-referrer";im.decoding="async";im.title="Tap to make it bigger";
+    let tries=0;const web=/^https?:/i.test(img);
+    im.onerror=()=>{tries++;if(web&&tries===1&&!jpInClaude){im.src=jpProxy(img);return}
+      box.innerHTML="";note("jpmerr",!web?"The picture didn't load.":jpInClaude?"Inside Claude, pictures from websites are blocked. They show on the Crockick website (GitHub). Uploaded pictures work everywhere.":"This picture couldn't be loaded. The link may be broken or private: try another link or upload the picture.")};
+    im.onclick=()=>jpZoom(im.src);im.src=img;box.appendChild(im);return}
+  if(v&&v.kind==="frame"){
+    if(small){note("jpmok",v.gif?"✓ GIF found. It plays during the game.":"✓ Video found. It plays during the game.");return}
+    const f=document.createElement("iframe");f.className="jpvideo"+(v.gif?" gif":"");f.src=v.src;f.title="Video";f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";box.appendChild(f);
+    if(jpInClaude)note("jpmerr small","If the video stays blank, open Crockick from the GitHub website: Claude blocks videos from other sites.");return}
+  if(v&&v.kind==="file"){const el=document.createElement("video");el.className="jpvideo";el.src=v.src;el.controls=true;el.playsInline=true;el.preload="metadata";
+    el.onerror=()=>{box.innerHTML="";note("jpmerr",jpInClaude?"Inside Claude, videos from websites are blocked. They play on the Crockick website (GitHub).":"This video couldn't be loaded. The link may be broken or private.")};box.appendChild(el);return}
+  /* any other web page: show it inside when the site allows it */
+  if(small){note("jpmok","This page will open inside the game. Some websites don't allow that; then a button opens it.");return}
+  const f=document.createElement("iframe");f.className="jpvideo jppage";f.src=m.u;f.title="Web page";f.referrerPolicy="no-referrer";f.setAttribute("sandbox","allow-scripts allow-same-origin allow-popups allow-forms allow-presentation");box.appendChild(f);orig();
 }
 function jpCellMove(d){jpCellSave();let [ci,r]=jpCellAt;const C=jpCur.cats.length;let idx=ci*jpCur.rows+r+d;idx=Math.max(0,Math.min(C*jpCur.rows-1,idx));jpCellOpen(Math.floor(idx/jpCur.rows),idx%jpCur.rows)}
 $("jpCellOk").onclick=()=>{jpCellSave();$("jpCell").hidden=true;jpCellAt=null};
