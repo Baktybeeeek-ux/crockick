@@ -1723,7 +1723,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
         <button class="btn btn-success" type="button" id="jpNew">+ New game</button>
       </div>
     </div>
-    <input type="file" id="jpFile" accept=".json,.html,.htm,application/json,text/html" hidden>
+    <input type="file" id="jpFile" accept=".json,.html,.htm,application/json,text/html,image/*" multiple hidden>
     <div class="jpsaved" id="jpList"></div>
     <p class="jpnote" id="jpLibNote">Games are saved on this device. Use Share link or Download to move a game to another device.</p>
   </section>
@@ -5677,14 +5677,17 @@ function jpLibUI(){
 }
 $("jpNew").onclick=()=>{const b=jpBlank(5,5);jpBoards.push(b);jpPersist();jpCur=b;jpEditUI();setTimeout(()=>{$("jpTitle").focus();$("jpTitle").select()},0)};
 $("jpImportBtn").onclick=()=>$("jpFile").click();
-$("jpFile").onchange=async()=>{const f=$("jpFile").files[0];$("jpFile").value="";if(!f)return;
+$("jpFile").onchange=async()=>{const all=[...$("jpFile").files];$("jpFile").value="";
+  const f=all.find(x=>/\.(json|html?)$/i.test(x.name)||/json|html/.test(x.type));
+  if(!f){if(all.length)toast("Pick the game file (.html or .json). You can select its pictures together with it.");return}
+  const pics={};for(const x of all){if(x===f||!/^image\//.test(x.type))continue;try{pics[x.name.toLowerCase()]=x.type==="image/gif"&&x.size<1400000?await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(x)}):await jpShrink(x)}catch(e){}}
   let txt="";try{txt=await f.text()}catch(e){toast("That file couldn't be read");return}
-  let b=null;try{b=/^\s*[\[{]/.test(txt)?jpClean(JSON.parse(txt)):jpFromJeopardyLabs(txt)}catch(e){b=null}
+  let b=null;try{b=/^\s*[\[{]/.test(txt)?jpClean(JSON.parse(txt)):jpFromJeopardyLabs(txt,pics)}catch(e){b=null}
   if(!b){toast("That file isn't a Jeopardy game. For JeopardyLabs, open the game and save the page (Ctrl+S) as a web page file.");return}
   jpBoards.push(b);jpPersist();jpLibUI();
   const [n,t]=jpFilled(b);toast("Imported “"+b.title+"”: "+b.cats.length+" categories, "+n+" questions","ok")}
 /* reads a game saved from JeopardyLabs (the play page saved as .html). The file is only read, never run. */
-function jpFromJeopardyLabs(html){
+function jpFromJeopardyLabs(html,pics){pics=pics||{};
   const doc=new DOMParser().parseFromString(html,"text/html");
   const base=(doc.querySelector("base[href]")&&doc.querySelector("base[href]").getAttribute("href"))||"https://jeopardylabs.com";
   const abs=u=>{try{return new URL(u,base).href}catch(e){return ""}};
@@ -5696,7 +5699,8 @@ function jpFromJeopardyLabs(html){
   const mediaOf=el=>{if(!el)return null;
     const fr=el.querySelector("iframe[src]");if(fr)return jpMClean({t:"video",u:abs(fr.getAttribute("src"))});
     const v=el.querySelector("video[src],video source[src]");if(v)return jpMClean({t:"video",u:abs(v.getAttribute("src"))});
-    const im=el.querySelector("img[src]");if(im)return jpMClean({t:"image",u:abs(im.getAttribute("src"))});
+    const im=el.querySelector("img[src]");if(im){const raw=im.getAttribute("src");let nm="";try{nm=decodeURIComponent(raw.split(/[?#]/)[0].split("/").pop()).toLowerCase()}catch(e){}
+      if(pics[nm])return jpMClean({t:"image",u:pics[nm]});return jpMClean({t:"image",u:abs(raw)})}
     const a=[...el.querySelectorAll("a[href]")].map(x=>abs(x.getAttribute("href"))).find(u=>/^https?:/i.test(u));if(a){const vid=jpVideoEmbed(a);return jpMClean({t:vid?"video":"link",u:a})}
     return null};
   const C=Math.min(JP_MAXC,cats.length),R=Math.min(JP_MAXR,rowsEl.length);
@@ -5816,14 +5820,18 @@ function jpVideoEmbed(u){
   if(/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(u))return {kind:"file",src:u};
   return null;
 }
+const jpInClaude=/claude\.ai|claudeusercontent|claude\.site/.test(location.hostname);
 function jpMShow(box,m,small){
   box.innerHTML="";box.hidden=!m;if(!m)return;
   const open=(label)=>{const a=document.createElement("a");a.className="btn jpopen";a.href=m.u;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;return a};
-  if(m.t==="image"){const im=document.createElement("img");im.className="jpimg";im.alt="";im.src=m.u;im.onerror=()=>{box.innerHTML="";const p=document.createElement("p");p.className="jpmerr";p.textContent="The picture didn't load. Check the link.";box.appendChild(p)};box.appendChild(im);return}
+  if(m.t==="image"){const im=document.createElement("img");im.className="jpimg";im.alt="";im.referrerPolicy="no-referrer";im.decoding="async";
+    im.onerror=()=>{box.innerHTML="";const p=document.createElement("p");p.className="jpmerr";const web=/^https?:/i.test(m.u);
+      p.textContent=!web?"The picture didn't load.":jpInClaude?"Pictures from other websites can't show inside Claude. Open the GitHub version of Crockick to see them, or upload the picture from your device.":"This website doesn't let other pages show its picture. Open it below, or save it and upload it from your device.";
+      box.appendChild(p);if(web)box.appendChild(open("Open picture ↗"))};im.src=m.u;box.appendChild(im);return}
   if(m.t==="link"){let host="";try{host=new URL(m.u).hostname.replace(/^www\./,"")}catch(e){}box.appendChild(open("Open link"+(host?" · "+host:"")+" ↗"));return}
   const v=jpVideoEmbed(m.u);
   if(v&&v.kind==="frame"&&!small){const f=document.createElement("iframe");f.className="jpvideo";f.src=v.src;f.title="Video";f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;f.referrerPolicy="strict-origin-when-cross-origin";box.appendChild(f)}
-  else if(v&&v.kind==="file"){const el=document.createElement("video");el.className="jpvideo";el.src=v.src;el.controls=true;el.playsInline=true;el.preload="metadata";box.appendChild(el)}
+  else if(v&&v.kind==="file"){const el=document.createElement("video");el.className="jpvideo";el.src=v.src;el.referrerPolicy="no-referrer";el.controls=true;el.playsInline=true;el.preload="metadata";box.appendChild(el)}
   else if(small&&v){const p=document.createElement("p");p.className="jpmok";p.textContent="✓ Video found. It plays during the game.";box.appendChild(p);return}
   else if(!v){const p=document.createElement("p");p.className="jpmerr";p.textContent=small?"This isn't a YouTube, Vimeo or video file link. It will show as a button that opens the page.":"";if(small)box.appendChild(p)}
   box.appendChild(open("Open video in a new tab ↗"));
