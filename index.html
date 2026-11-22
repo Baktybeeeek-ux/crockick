@@ -1566,7 +1566,7 @@ body[data-view="jeopardy"]{overflow-x:clip}
         <span class="spypic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
         <p>Pass the phone to</p>
         <h2 id="spyPassName"></h2>
-        <button class="btn btn-lg btn-dark" type="button" id="spyShow">I'm <span id="spyShowName"></span>, show my card</button>
+        <button class="btn btn-lg btn-dark" type="button" id="spyShow">Show my card</button>
       </div>
       <div class="spyreveal" id="spyReveal" hidden>
         <p class="spyrl" id="spyRevealLabel">Your card</p>
@@ -5233,7 +5233,7 @@ function tbBuild(){
   const g=document.createElement("a");g.className="mnavb";g.href="#";g.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Games</span>';
   if(v==="hub")g.setAttribute("aria-current","page");g.onclick=e=>{e.preventDefault();if(location.hash&&location.hash!=="#"){try{history.pushState(null,"",location.pathname+location.search)}catch(x){location.hash=""}showView()}window.scrollTo(0,0)};bar.appendChild(g);
   const pairs=[];
-  document.querySelectorAll(TB_HEAD[v]+" .band .segnav > button").forEach(src=>{
+  document.querySelectorAll(TB_HEAD[v]+" .band .segnav > button:not(.focusbtn)").forEach(src=>{
     const b=document.createElement("button");b.type="button";b.className="mnavb"+(src.classList.contains("themebtn")?" themebtn":"");
     const sp=document.createElement("span");if(src.classList.contains("themebtn"))sp.className="themelbl";b.appendChild(sp);
     b.onclick=()=>src.click();b._src=src;bar.appendChild(b);pairs.push([src,b,sp])});
@@ -5245,7 +5245,7 @@ function tbBuild(){
 }
 /* ---------- focus mode ---------- */
 let focusOn=store.get("croc-focus")==="1";
-function focusApply(){const v=document.body.dataset.view;const on=focusOn&&v&&v!=="hub"&&!(document.body.classList.contains("mob")&&v==="crockick");
+function focusApply(){const v=document.body.dataset.view;const on=focusOn&&v&&v!=="hub"&&!document.body.classList.contains("mob");
   const was=document.body.classList.contains("focus");document.body.classList.toggle("focus",on);document.documentElement.classList.toggle("focus",on);
   document.querySelectorAll(".focusbtn").forEach(b=>b.setAttribute("aria-pressed",on));
   if(on!==was){window.scrollTo(0,0);document.querySelectorAll(".view>main,main.v-croc").forEach(m=>m.scrollTop=0);setTimeout(()=>window.dispatchEvent(new Event("resize")),60)}}
@@ -5254,7 +5254,7 @@ document.querySelectorAll(".focusbtn").forEach(b=>b.onclick=focusToggle);$("focu
 document.addEventListener("keydown",e=>{if(e.key!=="Escape"||!document.body.classList.contains("focus"))return;
   if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden]),.jpzoom:not([hidden]),.wpop"))return;
   e.preventDefault();e.stopImmediatePropagation();focusToggle()},true);
-document.addEventListener("keydown",e=>{if((e.key==="f"||e.key==="F")&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&document.body.dataset.view!=="hub"){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden])"))return;e.preventDefault();focusToggle()}});
+document.addEventListener("keydown",e=>{if((e.key==="f"||e.key==="F")&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&document.body.dataset.view!=="hub"&&!document.body.classList.contains("mob")){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(document.querySelector(".modal:not([hidden]),.jpclue:not([hidden])"))return;e.preventDefault();focusToggle()}});
 
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
   const h=a.getAttribute("href");if(h==="#"||h==="#crockick"||h==="#spy"||h==="#wheel"||h==="#jeopardy"){e.preventDefault();
@@ -5360,7 +5360,7 @@ function spyStart(){
 }
 function spyDealUI(){
   const prog=$("spyProg");prog.innerHTML=sg.names.map((_,i)=>`<i class="${i<sg.turn?"done":i===sg.turn?"now":""}"></i>`).join("");
-  const name=sg.names[sg.turn];$("spyPassName").textContent=name;$("spyShowName").textContent=name;
+  const name=sg.names[sg.turn];$("spyPassName").textContent=name;
   $("spyPass").hidden=false;$("spyReveal").hidden=true;$("spyCard").classList.remove("isspy");
 }
 $("spyStart").onclick=spyStart;
